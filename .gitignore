@@ -1,9 +1,10 @@
-# Dados brutos do SICONFI (regeneráveis pelos scripts)
-data/raw/
-
 # Python
 __pycache__/
 *.pyc
+
+# build do painel (transitórios, regeneráveis)
+scripts/_build/
+scripts/ipca_433.json
 
 # Temporários / editor / SO
 *.pdf
