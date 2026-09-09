@@ -1,14 +1,6 @@
 # Dados brutos do SICONFI (regeneráveis pelos scripts)
 data/raw/
 
-# Conteúdo do Piauí (será migrado para o repo panorama-fiscal-pi)
-data/pi/
-panorama_fiscal_pi.html
-diagnostico-fiscal-piaui.docx
-data/gen_diagnostico.py
-data/swap_data.py
-data/wrap_index.py
-
 # Python
 __pycache__/
 *.pyc
