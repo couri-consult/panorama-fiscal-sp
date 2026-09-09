@@ -121,6 +121,19 @@ def main():
     if so_pi:
         print(f"\n[JS]  definições SÓ no PI (provável conteúdo específico): {', '.join(so_pi)}")
 
+    # 3) dados nacionais compartilhados (bloco <script id="natl">): devem ser idênticos
+    def natl(html):
+        m = re.search(r'<script id="natl"[^>]*>(.*?)</script>', html, re.DOTALL)
+        return (m.group(1).strip() if m else None)
+    nsp, npi = natl(sp), natl(pi)
+    if nsp is None and npi is None:
+        pass
+    elif nsp == npi:
+        print("\n[DADOS NACIONAIS]  bloco 'natl' IDÊNTICO ✅")
+    else:
+        problemas += 1
+        print("\n[DADOS NACIONAIS]  bloco 'natl' DIVERGE ❌ (é dado compartilhado — atualize os dois)")
+
     print("\n" + "=" * 64)
     if problemas == 0:
         print("RESULTADO: motor IDÊNTICO ✅  — nada a propagar.")
