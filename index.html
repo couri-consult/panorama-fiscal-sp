@@ -1,0 +1,1239 @@
+<title>Panorama Fiscal do Estado de São Paulo · 2017–2026</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#eef1f5; --surface:#ffffff; --surface-2:#f5f7fa; --panel-line:#e2e7ee;
+    --ink:#141a24; --ink-2:#54606f; --ink-3:#8290a1;
+    --accent:#1f5fa8; --accent-soft:#e7eff8;
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#4a3aa7; --s7:#e34948;
+    --good:#1baf7a; --warn:#eda100; --crit:#e34948;
+    --grid:#eaeef3; --axis:#c4cdd8;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --shadow:0 1px 2px rgba(20,26,36,.04),0 6px 20px rgba(20,26,36,.06);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:where(:not([data-theme="light"])){
+      color-scheme:dark;
+      --bg:#12161c; --surface:#1a2028; --surface-2:#20272f; --panel-line:#2b333d;
+      --ink:#f2f5f8; --ink-2:#aeb9c6; --ink-3:#76828f;
+      --accent:#5b9be6; --accent-soft:#1e2c3d;
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#9085e9; --s7:#e66767;
+      --good:#2bbd88; --warn:#e0a800; --crit:#e66767;
+      --grid:#242c35; --axis:#3a444f;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#12161c; --surface:#1a2028; --surface-2:#20272f; --panel-line:#2b333d;
+    --ink:#f2f5f8; --ink-2:#aeb9c6; --ink-3:#76828f;
+    --accent:#5b9be6; --accent-soft:#1e2c3d;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#9085e9; --s7:#e66767;
+    --good:#2bbd88; --warn:#e0a800; --crit:#e66767;
+    --grid:#242c35; --axis:#3a444f;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1200px;margin:0 auto;padding:32px 22px 80px;counter-reset:sec}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  /* ---- Header ---- */
+  header.hd{margin-bottom:26px}
+  .eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:.16em;
+    font-size:11.5px;font-weight:700;color:var(--accent);margin:0 0 10px}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(28px,4.4vw,42px);
+    line-height:1.08;letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
+  .sub{font-size:16px;color:var(--ink-2);max-width:70ch;margin:0}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:16px}
+  .chip{font-size:12px;color:var(--ink-2);background:var(--surface);border:1px solid var(--panel-line);
+    padding:5px 11px;border-radius:999px;box-shadow:var(--shadow)}
+  .chip b{color:var(--ink);font-weight:600}
+
+  /* ---- KPI cards ---- */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:14px;margin:26px 0 8px}
+  .kpi{background:var(--surface);border:1px solid var(--panel-line);border-radius:var(--radius);
+    padding:16px 16px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+  .kpi.g::before{background:var(--good)} .kpi.w::before{background:var(--warn)} .kpi.c::before{background:var(--crit)}
+  .kpi .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600}
+  .kpi .val{font-family:var(--serif);font-size:27px;font-weight:700;margin:7px 0 2px;letter-spacing:-.01em}
+  .kpi .val small{font-size:14px;color:var(--ink-2);font-weight:400;font-family:var(--sans)}
+  .kpi .delta{font-size:12.5px;color:var(--ink-2)}
+  .kpi .delta .up{color:var(--good)} .kpi .delta .down{color:var(--crit)} .kpi .delta.inv .up{color:var(--crit)} .kpi .delta.inv .down{color:var(--good)}
+  .kpi .status{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:6px;display:inline-block}
+  .st-good{color:var(--good)} .st-warn{color:var(--warn)} .st-crit{color:var(--crit)}
+
+  /* ---- Sections & panels ---- */
+  section{margin-top:34px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:4px;border-top:1px solid var(--panel-line);padding-top:26px;counter-increment:sec}
+  .sec-num{font-family:var(--serif);font-size:14px;color:var(--ink-3);font-weight:700}
+  .sec-num::before{content:counter(sec,decimal-leading-zero)}
+  h2{font-family:var(--serif);font-size:22px;font-weight:700;margin:0;letter-spacing:-.01em}
+  .sec-desc{color:var(--ink-2);font-size:14.5px;margin:8px 0 18px;max-width:82ch}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px}
+  .panel{background:var(--surface);border:1px solid var(--panel-line);border-radius:var(--radius);
+    padding:18px 18px 14px;box-shadow:var(--shadow)}
+  .panel h3{font-size:15px;font-weight:700;margin:0 0 2px;color:var(--ink)}
+  .panel .psub{font-size:12.5px;color:var(--ink-3);margin:0 0 12px}
+  .chart{width:100%;position:relative}
+  .chart svg{width:100%;height:auto;display:block;overflow:visible}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:12.5px;color:var(--ink-2)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+  .legend i.ln{height:3px;border-radius:2px;width:16px}
+
+  /* axis / marks */
+  .gl{stroke:var(--grid);stroke-width:1}
+  .axl{fill:var(--ink-3);font-size:11px}
+  .axl.x{text-anchor:middle}
+  .thr{stroke-dasharray:4 4;stroke-width:1.4}
+  .thr-lab{font-size:10.5px;font-weight:600}
+  .dot-end{stroke:var(--surface);stroke-width:2}
+
+  /* tooltip */
+  .tt{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--panel-line);
+    border-radius:9px;box-shadow:var(--shadow);padding:9px 11px;font-size:12px;color:var(--ink);
+    width:180px;opacity:0;transition:opacity .08s;z-index:50}
+  .tt .ty{font-weight:700;margin-bottom:5px;font-size:12.5px}
+  .tt .tr{display:flex;justify-content:space-between;gap:14px;align-items:center;line-height:1.5}
+  .tt .tr .k{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2)}
+  .tt .tr .k i{width:9px;height:9px;border-radius:2px;flex:none}
+  .tt .tr .v{font-variant-numeric:tabular-nums;font-weight:600}
+  .hover-guide{stroke:var(--axis);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+
+  /* CAPAG */
+  .capag-timeline{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin:4px 0 6px}
+  .capag-cell{background:var(--surface-2);border:1px solid var(--panel-line);border-radius:10px;
+    padding:12px 6px;text-align:center}
+  .capag-cell .yr{font-size:11.5px;color:var(--ink-3);font-weight:600}
+  .capag-cell .lt{font-family:var(--serif);font-size:30px;font-weight:700;line-height:1.1;margin-top:2px}
+  .lt.A{color:var(--good)} .lt.Bp{color:#7cae2e} .lt.B{color:var(--warn)} .lt.C{color:#e07a2e} .lt.D{color:var(--crit)}
+  .nota-badge{display:inline-block;min-width:20px;padding:1px 6px;border-radius:6px;font-weight:700;
+    font-size:12px;color:#fff;text-align:center}
+  .nb-A{background:var(--good)} .nb-B{background:var(--warn)} .nb-C{background:#e07a2e} .nb-D{background:var(--crit)}
+
+  /* limit bars */
+  .limbars{display:flex;flex-direction:column;gap:16px;margin-top:6px}
+  .limrow .lh{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+  .limrow .lh .ln{color:var(--ink-2)} .limrow .lh .lv{font-weight:700;font-variant-numeric:tabular-nums}
+  .track{position:relative;height:22px;background:var(--surface-2);border:1px solid var(--panel-line);
+    border-radius:7px;overflow:hidden}
+  .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px 0 0 6px}
+  .limmark{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--crit)}
+  .limcap{font-size:11px;color:var(--ink-3);margin-top:5px;display:flex;justify-content:space-between}
+
+  /* table */
+  .tablewrap{overflow-x:auto;border:1px solid var(--panel-line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;background:var(--surface);min-width:820px}
+  th,td{padding:9px 11px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--panel-line)}
+  th{position:sticky;top:0;background:var(--surface-2);font-weight:700;color:var(--ink-2);font-size:11px;
+    text-transform:uppercase;letter-spacing:.04em;z-index:2}
+  td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1}
+  th:first-child{z-index:3;background:var(--surface-2)}
+  tbody tr:hover td{background:var(--surface-2)}
+  td.grp{font-weight:700;color:var(--ink);background:var(--surface-2)!important;text-align:left}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  /* takeaways */
+  .takeaways{background:var(--surface);border:1px solid var(--panel-line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:6px 4px}
+  .tk{display:flex;gap:14px;padding:16px 18px;border-bottom:1px solid var(--panel-line)}
+  .tk:last-child{border-bottom:none}
+  .tk .ic{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    font-size:15px;font-weight:800;color:#fff;font-family:var(--serif)}
+  .ic.good{background:var(--good)} .ic.warn{background:var(--warn)} .ic.crit{background:var(--crit)} .ic.info{background:var(--accent)}
+  .tk .tx{font-size:14.5px}
+  .tk .tx b{color:var(--ink)}
+  .note{font-size:12.5px;color:var(--ink-3);margin-top:18px;line-height:1.5}
+  .foot{margin-top:30px;font-size:12px;color:var(--ink-3);border-top:1px solid var(--panel-line);padding-top:18px}
+  a.src{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+  a.src:hover{border-bottom-color:var(--accent)}
+  @media (max-width:560px){.capag-timeline{grid-template-columns:repeat(4,1fr)}}
+
+  /* debate */
+  .concept-row{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;margin:4px 0 20px}
+  .concept{background:var(--surface-2);border:1px solid var(--panel-line);border-radius:12px;padding:14px 16px}
+  .concept .ct{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:6px}
+  .concept .cv{font-family:var(--serif);font-size:20px;font-weight:700;margin-bottom:4px}
+  .concept .cd{font-size:12.5px;color:var(--ink-2);line-height:1.45}
+  .concept.priv .ct{color:var(--s2)} .concept.priv .cv{color:var(--s2)}
+  .concept.pub .ct{color:var(--s1)} .concept.pub .cv{color:var(--s1)}
+  .concept-neq{display:grid;place-items:center;font-family:var(--serif);font-size:26px;color:var(--ink-3);font-weight:700}
+  .debate{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pos{border:1px solid var(--panel-line);border-radius:12px;padding:4px 2px;overflow:hidden}
+  .pos-h{padding:12px 16px;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;
+    border-bottom:1px solid var(--panel-line)}
+  .pos.gov .pos-h{color:var(--good)} .pos.crit .pos-h{color:var(--crit)}
+  .pos-h .dot{width:9px;height:9px;border-radius:50%}
+  .pos.gov .dot{background:var(--good)} .pos.crit .dot{background:var(--crit)}
+  .pos ul{list-style:none;margin:0;padding:6px 16px 12px}
+  .pos li{font-size:13px;line-height:1.5;padding:9px 0;border-bottom:1px solid var(--panel-line);color:var(--ink-2)}
+  .pos li:last-child{border-bottom:none}
+  .pos li b{color:var(--ink)}
+  @media (max-width:640px){.concept-row{grid-template-columns:1fr}.concept-neq{transform:rotate(90deg);padding:2px}.debate{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+  <header class="hd">
+    <p class="eyebrow">Finanças Públicas Estaduais · SICONFI / STN</p>
+    <h1>Panorama Fiscal do Estado de São Paulo</h1>
+    <p class="sub">Série histórica 2017–2026 construída a partir dos demonstrativos oficiais (RREO e RGF)
+      declarados pelo Governo de SP ao Tesouro Nacional, complementada pela série da Capacidade de Pagamento
+      (CAPAG) da STN. Valores nominais correntes, em reais.</p>
+    <div class="meta-row">
+      <span class="chip">Ente: <b>Governo do Estado de SP</b> (cod. IBGE 35)</span>
+      <span class="chip">Fonte: <b>API SICONFI</b> · RREO Anexos 01/03/06 · RGF Anexos 01–05</span>
+      <span class="chip">RREO: <b>até dez</b> (2026 até jun) · RGF: <b>3º quadrim.</b> (2026 1º)</span>
+      <span class="chip" id="chip-2026">2026 = <b>dados parciais</b> no ano</span>
+    </div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+  <p class="note" id="kpi-note"></p>
+
+  <!-- 1 Resultados -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Resultado primário e resultado corrente</h2></div>
+    <p class="sec-desc">O resultado primário (receitas menos despesas não financeiras) mede o esforço fiscal do
+      exercício; o resultado corrente (receita corrente menos despesa corrente) mede a poupança gerada para
+      financiar investimentos e amortizar dívida. Ambos em R$ bilhões, base liquidada.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Resultado primário — acima da linha</h3>
+        <p class="psub">Barras · R$ bilhões · exercícios encerrados 2017–2025</p>
+        <div class="chart" id="c-prim"></div>
+      </div>
+      <div class="panel"><h3>Resultado corrente (poupança em conta corrente)</h3>
+        <p class="psub">Receita corrente − despesa corrente · R$ bilhões</p>
+        <div class="chart" id="c-corr"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 Despesa corrente -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Composição da despesa</h2></div>
+    <p class="sec-desc">Despesa corrente decomposta em pessoal e encargos, juros e encargos da dívida e outras
+      despesas correntes; despesa de capital em investimentos, inversões financeiras e amortização da dívida.
+      Base liquidada, R$ bilhões, exercícios encerrados.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Despesa corrente por natureza</h3>
+        <p class="psub">Empilhado · R$ bilhões · 2017–2025</p>
+        <div class="chart" id="c-despcorr"></div>
+        <div class="legend" id="l-despcorr"></div>
+      </div>
+      <div class="panel"><h3>Despesa de capital por natureza</h3>
+        <p class="psub">Empilhado · R$ bilhões · 2017–2025</p>
+        <div class="chart" id="c-despcap"></div>
+        <div class="legend" id="l-despcap"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 Receitas -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Receitas correntes e arrecadação de impostos</h2></div>
+    <p class="sec-desc">Receita corrente total e a parcela tributária (impostos, taxas e contribuições de melhoria),
+      que responde por cerca de três quartos da receita corrente do Estado. R$ bilhões, base realizada.</p>
+    <div class="panel"><h3>Receita corrente × impostos, taxas e contribuições</h3>
+      <p class="psub">Linhas · R$ bilhões · 2017–2025</p>
+      <div class="chart" id="c-rec"></div>
+      <div class="legend" id="l-rec"></div>
+    </div>
+  </section>
+
+  <!-- NEW Valores reais -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Valores reais e crescimento por componente</h2></div>
+    <p class="sec-desc">Séries deflacionadas pelo IPCA (média anual, <b>base = preços de 2025</b>), o que remove o
+      efeito da inflação — <b>+50,6% acumulados de 2017 a 2025</b> e <b>+14,6% de 2022 a 2025</b>. Em termos reais
+      fica nítido qual gasto de fato cresceu. Ranking do crescimento real acumulado por componente no período
+      completo e apenas na gestão Tarcísio (2022 = último ano herdado → 2025).</p>
+    <div class="panel" style="margin-bottom:18px">
+      <h3>Trajetória real — número-índice (2017 = 100, preços de 2025)</h3>
+      <p class="psub">Linhas · deflacionado pelo IPCA · exercícios encerrados 2017–2025</p>
+      <div class="chart" id="c-realidx"></div>
+      <div class="legend" id="l-realidx"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Crescimento real acumulado · período completo</h3>
+        <p class="psub">Variação real % · 2017 → 2025 · ordenado</p>
+        <div class="chart" id="c-rankfull"></div>
+      </div>
+      <div class="panel"><h3>Crescimento real acumulado · gestão Tarcísio</h3>
+        <p class="psub">Variação real % · 2022 → 2025 · ordenado</p>
+        <div class="chart" id="c-ranktarc"></div>
+      </div>
+    </div>
+    <p class="note">Leitura: no período completo, o <b>pessoal cresceu menos que a receita</b> (+11% vs +18%).
+      Na gestão Tarcísio, o <b>investimento direto</b> recua ~45% ante o pico eleitoral de 2022, mas boa parte
+      migrou para <b>inversões financeiras</b> (+195%) — aportes de capital e PPP que também financiam
+      investimento. As duas seções seguintes destrincham esse grupo e mostram que, por média de gestão, o esforço
+      de investimento na verdade <b>cresceu</b>. Impostos caem 7% real, refletindo o teto do ICMS (LC 194/2022).</p>
+  </section>
+
+  <!-- NEW Radiografia inversões -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Radiografia das inversões financeiras</h2></div>
+    <p class="sec-desc">As inversões financeiras foram o grupo que <b>mais cresceu em termos reais</b> na gestão
+      atual (+195% de 2022 a 2025). Diferentemente de "investimentos" (obras e equipamentos), esse grupo capta
+      <b>aportes financeiros</b>: aumento de capital de empresas, execução de contratos de PPP e operações entre
+      órgãos. Abrindo pelo elemento de despesa na Declaração de Contas Anuais (DCA), o destino é essencialmente
+      o <b>sistema metroferroviário do Estado</b>.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Inversões financeiras por finalidade</h3>
+        <p class="psub">Empilhado · R$ bilhões · base liquidada · DCA Anexo I-D · 2018–2025</p>
+        <div class="chart" id="c-inv"></div>
+        <div class="legend" id="l-inv"></div>
+      </div>
+      <div class="panel"><h3>O que há por trás</h3>
+        <p class="psub">Composição dos R$ 10,9 bi de 2025</p>
+        <div id="inv-breakdown"></div>
+        <p class="note" style="margin-top:14px"><b>Aumento de capital de empresas</b> (R$ 6,8 bi em 2025) é a
+          maior parcela — inclui a <b>capitalização da CPTM em R$ 2,19 bi</b> (aprovada em dez/2025) e demais
+          aportes de capital às estatais de transporte. A <b>execução de PPPs</b> (R$ 2,8 bi) reflete a maturação
+          do programa de concessões e o <b>aporte de ~R$ 5 bi ao sistema metrô/CPTM</b> para sustentabilidade
+          tarifária e expansão (8 linhas em obras). O pico <b>intraorçamentário de 2024</b> (R$ 4,2 bi) foi uma
+          operação de capital entre órgãos do próprio Estado. Em resumo: não é gasto "escondido", e sim a forma
+          contábil de <b>bancar a política de transporte sobre trilhos</b> — meio-caminho entre investimento e
+          subsídio.</p>
+      </div>
+    </div>
+    <p class="note">Fontes:
+      <a class="src" href="https://diariodotransporte.com.br/2026/03/20/cptm-reforca-capital-em-r-219-bilhoes-e-expoe-estrategia-do-estado-sobre-ativos-ferroviarios/">CPTM — reforço de capital de R$ 2,19 bi</a> ·
+      <a class="src" href="https://agenciabrasil.ebc.com.br/geral/noticia/2025-12/governo-de-sp-anuncia-aumento-nas-passagens-de-metro-e-de-trens">aporte ao sistema metroferroviário</a> ·
+      <a class="src" href="https://investsp.org.br/com-obras-em-oito-linhas-de-metro-e-trem-governo-de-sp-viabiliza-expansao-inedita-do-transporte-sobre-trilhos/">expansão do transporte sobre trilhos</a>.
+      Detalhamento por elemento: DCA-Anexo I-D (SICONFI), grupo 4.5.</p>
+  </section>
+
+  <!-- NEW Investimento ampliado -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Investimento direto × investimento ampliado</h2></div>
+    <p class="sec-desc">Se parte do que saiu de "investimentos" reapareceu como aporte de capital e PPP — que
+      também financiam formação de capital, só que via estatais e concessionárias — a leitura correta é olhar o
+      <b>investimento ampliado</b> (direto + aumento de capital de empresas + aportes de PPP), e por
+      <b>médias de gestão</b>, já que esses fluxos são muito irregulares (pico eleitoral em 2022, vale pontual em
+      2025). Valores reais, base 2025.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Composição do investimento ampliado</h3>
+        <p class="psub">Empilhado · R$ bilhões reais (base 2025) · 2018–2025</p>
+        <div class="chart" id="c-ampl"></div>
+        <div class="legend" id="l-ampl"></div>
+      </div>
+      <div class="panel"><h3>Média por gestão — o "colapso" some</h3>
+        <p class="psub">Média anual real · R$ bilhões (base 2025)</p>
+        <div id="ampl-avg"></div>
+        <p class="note" style="margin-top:14px">Ponta a ponta, o investimento direto cai 45% (2022→2025); mas isso
+          compara o <b>pico eleitoral de 2022</b> com um <b>vale de 2025</b>. Pela <b>média anual</b>, o investimento
+          direto de Tarcísio (R$ 14,6 bi) é <b>+12% maior</b> que o da gestão anterior (R$ 13,1 bi), e o ampliado é
+          <b>+21% maior</b> (R$ 21,4 bi vs R$ 17,7 bi). A queda do investimento direto é, em boa medida, uma
+          <b>troca de forma</b> — de obra orçada para capitalização de estatais e PPP — não um recuo do esforço de
+          investimento.</p>
+      </div>
+    </div>
+    <p class="note"><b>Ressalvas para não exagerar no otimismo:</b> (1) o ampliado é um <b>teto</b> — parte da
+      capitalização de estatais de transporte é, na prática, <b>subsídio tarifário/custeio</b>, não formação de
+      capital; o direto é um <b>piso</b>; a verdade está entre os dois. (2) O aporte público de PPP capta só a
+      parcela do Estado — o <b>investimento privado mobilizado</b> (maior) fica fora do orçamento. (3) Excluí de
+      propósito as inversões puramente financeiras (compra de títulos/imóveis, empréstimos, intra), que
+      <b>não geram investimento novo</b>. A medida rigorosa seria a FBCF do Estado + estatais dependentes, fora do
+      alcance do SICONFI.</p>
+
+    <div class="panel" style="margin-top:18px">
+      <h3>O que se diz sobre o investimento em SP</h3>
+      <p class="psub">O debate público mistura dois conceitos de "investimento" que têm ordens de grandeza
+        distintas. Separá-los é o que evita a conversa de surdos.</p>
+      <div class="concept-row">
+        <div class="concept priv">
+          <div class="ct">Investimento contratado / privado</div>
+          <div class="cv">R$ 780–910 bi</div>
+          <div class="cd">Anunciado/contratado via concessões, PPPs e privatizações (Sabesp, leilões). Capital
+            privado, <b>fora do orçamento</b> — é o número dos "recordes".</div>
+        </div>
+        <div class="concept-neq">≠</div>
+        <div class="concept pub">
+          <div class="ct">Investimento público executado</div>
+          <div class="cv">R$ 15–35 bi/ano</div>
+          <div class="cd">O que o Tesouro estadual de fato gasta em obras e capital (orçamento). É este que a
+            crítica diz estar baixo — e o que medimos no SICONFI.</div>
+        </div>
+      </div>
+      <div class="debate">
+        <div class="pos gov">
+          <div class="pos-h"><span class="dot"></span>O governo defende</div>
+          <ul>
+            <li><b>Recorde de investimento contratado:</b> R$ 780 bi em 2024 e R$ 910 bi em 3 anos (novos
+              empreendimentos + leilões/concessões), com a privatização da Sabesp como âncora.</li>
+            <li><b>Modelo de alavancagem:</b> as 15 PPPs/concessões do PPI-SP podem somar +R$ 30 bi/ano sem
+              pressionar a dívida — "mudou a forma, não o tamanho" do investimento.</li>
+            <li><b>Obras em andamento:</b> R$ 4,51 bi no metrô/trens em 2025 (89% do previsto), R$ 33 bi em obras
+              metroviárias, Rodoanel Norte, Linha 17, Túnel Santos-Guarujá, Trem Intercidades, Casa Paulista.</li>
+          </ul>
+        </div>
+        <div class="pos crit">
+          <div class="pos-h"><span class="dot"></span>Os críticos apontam</div>
+          <ul>
+            <li><b>Execução orçamentária baixa:</b> em meados de 2024 só 10,6% do investimento previsto havia sido
+              executado (R$ 2,4 bi de R$ 22,4 bi) — acusação de "poupar para o ano eleitoral".</li>
+            <li><b>Corte real à frente:</b> o próprio Orçamento de 2026 projeta investimento caindo para R$ 32,7 bi
+              (de R$ 34,7 bi), −3,5% nominal e ~−10% real.</li>
+            <li><b>Economia estagnada:</b> SP cresceu 0,4% em 12 meses — o menor entre os 27 estados (dados do
+              Valor Econômico), contra ~2% do país; troca de patrimônio público por concessão gera dúvidas sobre
+              tarifas.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Fontes — governo/oficial:
+        <a class="src" href="https://www.investe.sp.gov.br/noticia/sp-atrai-investimento-recorde-de-r-780-bilhoes-em-ano-com-alta-do-pib-e-geracao-recorde-de-empregos/">InvesteSP</a> ·
+        <a class="src" href="https://semil.sp.gov.br/2025/12/em-3-anos-de-gestao-governo-de-sp-destrava-obras-emblematicas-e-faz-expansao-historica-de-servicos-e-investimentos/">balanço 3 anos (SEMIL)</a> ·
+        <a class="src" href="https://exame.com/brasil/infraestrutura/ppps-e-concessoes-podem-elevar-investimentos-de-sp-em-mais-de-r-30-bi-por-ano-diz-secretario/">Exame (PPPs)</a>.
+        Críticas — grande circulação:
+        <a class="src" href="https://www.metropoles.com/sao-paulo/governo-sp-arrecada-investe">Metrópoles (execução de 10,6%)</a> ·
+        <a class="src" href="https://jornaldebrasilia.com.br/noticias/politica-e-poder/tarcisio-projeta-recuo-de-investimentos-do-governo-de-sp-no-orcamento-de-2026/">Jornal de Brasília (corte 2026)</a> ·
+        <a class="src" href="https://www.gazetadopovo.com.br/sao-paulo/tarcisio-concessoes-privatizacoes-bilhoes-investimentos/">Gazeta do Povo</a>.
+        Dado de crescimento: Valor Econômico. Leituras mais duras (privatização) vêm de veículos de oposição
+        (Brasil de Fato, Revista Fórum).</p>
+    </div>
+  </section>
+
+  <!-- 4 Dívida -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Endividamento consolidado</h2></div>
+    <p class="sec-desc">Estoque da dívida consolidada bruta (DC) e líquida (DCL) e sua relação com a Receita
+      Corrente Líquida (RCL). O limite da Resolução nº 40/2001 do Senado fixa a DCL em <b>200% da RCL</b> para
+      Estados — teto do qual SP se distanciou de forma expressiva desde 2021.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Dívida consolidada bruta e líquida</h3>
+        <p class="psub">Linhas · R$ bilhões · saldo ao fim do período · 2017–2026</p>
+        <div class="chart" id="c-div"></div>
+        <div class="legend" id="l-div"></div>
+      </div>
+      <div class="panel"><h3>DC e DCL como % da RCL vs. limite de 200%</h3>
+        <p class="psub">Linhas · % da RCL ajustada · 2017–2026</p>
+        <div class="chart" id="c-divpct"></div>
+        <div class="legend" id="l-divpct"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW Decomposição dívida/RCL -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>O que explicou a queda da dívida/RCL?</h2></div>
+    <p class="sec-desc">A razão DCL/RCL caiu de 171% (2017) para 124% (2025), mas <b>não porque o Estado quitou
+      dívida</b> — foi o <b>denominador (a RCL) que disparou</b>. O painel abaixo isola cada efeito: partindo de
+      171% em 2017, se apenas a RCL tivesse variado (dívida congelada) a razão cairia a <b>97%</b>; se apenas a
+      dívida tivesse variado (RCL congelada) ela <b>subiria a 218%</b>. O movimento real é dominado pela receita.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Decomposição contrafactual · 2017 → 2025</h3>
+        <p class="psub">DCL/RCL (%) sob cenários que isolam numerador e denominador</p>
+        <div class="limbars" id="decomp-viz"></div>
+      </div>
+      <div class="panel"><h3>Dívida e RCL: nominal × real</h3>
+        <p class="psub">Variação acumulada · deflator IPCA · base preços de 2025</p>
+        <div id="decomp-stats"></div>
+        <p class="note" style="margin-top:14px"><b>Por que a dívida cresce devagar.</b> Desde a
+          <b>LC 148/2014</b>, a dívida de SP refinanciada pela Lei 9.496/1997 passou a ser corrigida por
+          <b>IPCA + 4% a.a., limitado à Selic</b> (antes IGP-DI + 9%/6%), o que faz o estoque crescer perto da
+          inflação — em 2021 houve até correção negativa do saldo. Já a <b>RCL saltou em 2021</b> com o boom do
+          ICMS (combustíveis/energia e inflação alta); a <b>LC 194/2022</b> depois limitou o ICMS desses setores,
+          o que ajuda a explicar a RCL real quase estagnada a partir de 2022. Sob Tarcísio a
+          <b>desalavancagem parou</b>: a dívida real subiu +9% e a RCL real só +1%, elevando a razão de 115% (2022)
+          para 124% (2025). O <b>Propag</b> (LC 212/2025, do PLP 121/2024) renegocia esse estoque, alongando prazos
+          a 2054 e recalculando juros.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 Pessoal -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Despesa com pessoal e limites da LRF</h2></div>
+    <p class="sec-desc">Despesa total com pessoal (DTP) do Poder Executivo em % da RCL ajustada, confrontada com
+      os limites da Lei de Responsabilidade Fiscal para o Executivo estadual: <b>alerta 44,1%</b>,
+      <b>prudencial 46,55%</b> e <b>máximo 49%</b>. SP opera com folga confortável em todo o período.</p>
+    <div class="panel"><h3>DTP / RCL do Executivo vs. limites legais</h3>
+      <p class="psub">Linha · % da RCL ajustada · últimos 12 meses · 2017–2026</p>
+      <div class="chart" id="c-pess"></div>
+      <div class="legend" id="l-pess"></div>
+    </div>
+  </section>
+
+  <!-- 6 Limites endividamento -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Limites de endividamento — posição atual</h2></div>
+    <p class="sec-desc">Posição no exercício mais recente frente aos tetos das Resoluções do Senado Federal:
+      dívida consolidada líquida (200% da RCL), operações de crédito (16% da RCL/ano) e garantias
+      concedidas (22% da RCL). A marca vermelha indica o limite.</p>
+    <div class="grid2">
+      <div class="panel"><h3 id="lim-title">Indicadores vs. limites</h3>
+        <p class="psub" id="lim-sub"></p>
+        <div class="limbars" id="limbars"></div>
+      </div>
+      <div class="panel"><h3>Trajetória dos indicadores de endividamento</h3>
+        <p class="psub">Operações de crédito e garantias como % da RCL · 2017–2026</p>
+        <div class="chart" id="c-limtraj"></div>
+        <div class="legend" id="l-limtraj"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 Caixa + eficiencia -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Disponibilidade de caixa e rigidez da despesa</h2></div>
+    <p class="sec-desc">Disponibilidade de caixa bruta e líquida (após obrigações financeiras, antes da inscrição
+      em restos a pagar não processados), do RGF Anexo 05; e o grau de rigidez medido pela despesa corrente como
+      proporção da receita corrente.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Disponibilidade de caixa bruta e líquida</h3>
+        <p class="psub">Linhas · R$ bilhões · consolidado do ente · 2017–2025</p>
+        <div class="chart" id="c-caixa"></div>
+        <div class="legend" id="l-caixa"></div>
+      </div>
+      <div class="panel"><h3>Despesa corrente / receita corrente</h3>
+        <p class="psub">Linha · % · quanto menor, maior a poupança corrente · 2017–2026</p>
+        <div class="chart" id="c-efic"></div>
+        <div class="legend" id="l-efic"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 CAPAG -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Capacidade de Pagamento (CAPAG)</h2></div>
+    <p class="sec-desc">A nota CAPAG da STN resume a saúde fiscal em três indicadores — endividamento (Ind. 1),
+      poupança corrente (Ind. 2) e liquidez (Ind. 3) — e uma classificação consolidada de A a D, que baliza a
+      concessão de garantias da União a novas operações de crédito. SP manteve a nota <b>B</b> em toda a série.</p>
+    <div class="panel" style="margin-bottom:18px">
+      <h3>Classificação consolidada por ano</h3>
+      <p class="psub">Boletins CAPAG/STN · 2018–2025 · nota B permite aval da União mediante contragarantias</p>
+      <div class="capag-timeline" id="capag-tl"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Indicadores 1 e 2 — endividamento e poupança corrente</h3>
+        <p class="psub">Ind.1 = DC/RCL (%, esq. conceito) · Ind.2 = desp. corrente / rec. corrente ajustada (%)</p>
+        <div class="chart" id="c-cap12"></div>
+        <div class="legend" id="l-cap12"></div>
+      </div>
+      <div class="panel"><h3>Notas por indicador</h3>
+        <p class="psub">A (verde) melhor · C (laranja) pior · nota consolidada em destaque</p>
+        <div class="chart" id="c-capnotas" style="overflow-x:auto"></div>
+        <p class="note" style="margin-top:10px">A metodologia do Indicador 3 (liquidez) foi alterada a partir de
+          2024, o que explica a quebra de nível na série — os valores de 2024–2025 não são diretamente
+          comparáveis aos anteriores.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 Tabela -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Série histórica completa</h2></div>
+    <p class="sec-desc">Todas as variáveis solicitadas, por exercício. Valores em R$ milhões, salvo indicadores em %.
+      Fonte: SICONFI/STN. Colunas de 2026 refletem dados parciais no ano (fluxos até junho; estoques e razões de 12
+      meses até o 1º quadrimestre).</p>
+    <div class="tablewrap"><table id="tbl"></table></div>
+  </section>
+
+  <!-- NEW Leitura crítica Tarcísio -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Leitura crítica da gestão fiscal (2023–2025)</h2></div>
+    <p class="sec-desc">Combinação dos achados dos próprios dados do SICONFI (à esquerda, ícones ◆) com as
+      principais críticas que vêm sendo feitas ao manejo fiscal do governo Tarcísio na imprensa, na oposição e no
+      controle externo (ícones !). As críticas são reproduzidas como posições de terceiros, com as fontes
+      indicadas.</p>
+    <div class="takeaways" id="crit"></div>
+    <p class="note">Fontes das críticas:
+      <a class="src" href="https://capitalpolitica.com.br/tce-sp-aprova-contas-de-2025-do-governo-tarcisio-com-ressalvas-criticas-focam-em-renuncias-fiscais-e-fiscalizacao/">TCE-SP — contas de 2025 aprovadas com ressalvas (renúncias fiscais e fiscalização)</a> ·
+      <a class="src" href="https://regiaonoroeste.com/haddad-critica-situacao-fiscal-de-sp-e-alfineta-tarcisio-de-freitas-precisa-repensar-o-ceo/">Haddad critica a situação fiscal de SP</a> ·
+      <a class="src" href="https://causaoperaria.org.br/2024/privatizacoes-e-ajuste-fiscal-tarcisio-ameaca-sao-paulo/">Privatizações e ajuste fiscal (crítica de oposição)</a> ·
+      <a class="src" href="https://vermelho.org.br/2026/08/03/sob-tarcisio-sp-amarga-pior-desempenho-economico-em-10-anos-e-bate-recordes-em-violencia/">Desempenho econômico sob Tarcísio</a>.
+      Contexto da dívida:
+      <a class="src" href="https://www12.senado.leg.br/noticias/materias/2024/12/17/renegociacao-de-dividas-dos-estados-com-a-uniao-vai-a-sancao">Propag — renegociação das dívidas estaduais (Senado)</a> ·
+      <a class="src" href="https://www.tesourotransparente.gov.br/publicacoes/receita-corrente-liquida-rcl/2021/27">RCL 2021 (Tesouro Transparente)</a>.</p>
+  </section>
+
+  <!-- 10 Takeaways -->
+  <section>
+    <div class="sec-head"><span class="sec-num"></span><h2>Síntese — principais mensagens</h2></div>
+    <div class="takeaways" id="takeaways"></div>
+  </section>
+
+  <div class="foot">
+    <b>Notas metodológicas.</b> Receitas em base realizada (coluna "Até o Bimestre"); despesas em base liquidada
+    (coluna "Despesas Liquidadas Até o Bimestre"). RCL e DTP em 12 meses. Dívida e disponibilidade de caixa são
+    saldos ao fim do período de referência. O resultado primário é o valor oficial "acima da linha" do RREO Anexo 06.
+    Os limites de pessoal (44,1% / 46,55% / 49%) e de endividamento (200% / 16% / 22% da RCL) decorrem da LRF e das
+    Resoluções nº 40 e 43/2001 do Senado Federal. A CAPAG provém dos boletins anuais da STN (pasta <i>capag</i>);
+    as notas por indicador de 2018 foram inferidas pelos limites da metodologia. Dados coletados via
+    <a class="src" href="https://apidatalake.tesouro.gov.br/docs/siconfi/">API SICONFI</a> em ago/2026.
+  </div>
+</div>
+
+<script id="ampl" type="application/json">{"base": 2025, "series": [{"ano": 2018, "invdir": 11841208895.891855, "capital": 3519864920.547651, "ppp": 0.0}, {"ano": 2019, "invdir": 10010903365.37467, "capital": 2922250060.0751905, "ppp": 0.0}, {"ano": 2020, "invdir": 8862513822.694334, "capital": 3611230629.870941, "ppp": 19401691.33857161}, {"ano": 2021, "invdir": 11992740106.20707, "capital": 8219617806.323648, "ppp": 368628997.16882324}, {"ano": 2022, "invdir": 21460083569.05275, "capital": 2334522325.8272867, "ppp": 1059388557.5952296}, {"ano": 2023, "invdir": 15752908238.564184, "capital": 3185329782.1957417, "ppp": 1438970918.7153158}, {"ano": 2024, "invdir": 16315074388.124285, "capital": 2068659664.8837018, "ppp": 3993723077.8170295}, {"ano": 2025, "invdir": 11829883529.0, "capital": 6793944157.58, "ppp": 2814709027.58}], "avgs": {"gestao_ant": {"label": "Gestão anterior (2019–2022)", "invdir": 13081560215.832207, "ampl": 17715320232.88213}, "tarcisio": {"label": "Gestão Tarcísio (2023–2025)", "invdir": 14632622051.896156, "ampl": 21397734261.48675}}}</script>
+<script id="inv" type="application/json">[
+ {
+  "ano": 2018,
+  "total": 3333595170.52,
+  "capital": 2423130836.81,
+  "ppp": 0,
+  "intra": 849249014.3,
+  "titulos": 44440791.15,
+  "imoveis": 16774528.26,
+  "outros": 8.754432201385498e-08
+ },
+ {
+  "ano": 2019,
+  "total": 2579317147.43,
+  "capital": 2086821729.07,
+  "ppp": 0,
+  "intra": 490276616.2,
+  "titulos": 0,
+  "imoveis": 1390000,
+  "outros": 828802.159999907
+ },
+ {
+  "ano": 2020,
+  "total": 3285559262.1,
+  "capital": 2661654445.79,
+  "ppp": 14300000,
+  "intra": 605479816.31,
+  "titulos": 0,
+  "imoveis": 4125000,
+  "outros": 0.0
+ },
+ {
+  "ano": 2021,
+  "total": 7731154094.21,
+  "capital": 6561193377.76,
+  "ppp": 294252870.64,
+  "intra": 762739472.48,
+  "titulos": 0,
+  "imoveis": 112968373.33,
+  "outros": -1.9371509552001953e-07
+ },
+ {
+  "ano": 2022,
+  "total": 4189993166.08,
+  "capital": 2036430902,
+  "ppp": 924116926.21,
+  "intra": 1217136670.87,
+  "titulos": 0,
+  "imoveis": 12308667,
+  "outros": 0.0
+ },
+ {
+  "ano": 2023,
+  "total": 4945469872.34,
+  "capital": 2906235941.6,
+  "ppp": 1312890434.85,
+  "intra": 715163495.89,
+  "titulos": 11180000,
+  "imoveis": 0,
+  "outros": 3.5762786865234375e-07
+ },
+ {
+  "ano": 2024,
+  "total": 10198897333.16,
+  "capital": 1969837736.3,
+  "ppp": 3802938956.35,
+  "intra": 4200234000.51,
+  "titulos": 225886640,
+  "imoveis": 0,
+  "outros": 0.0
+ },
+ {
+  "ano": 2025,
+  "total": 10892702376.33,
+  "capital": 6793944157.58,
+  "ppp": 2814709027.58,
+  "intra": 838117329.47,
+  "titulos": 147885135.75,
+  "imoveis": 281202000,
+  "outros": 16844725.950000048
+ }
+]</script>
+<script id="analysis" type="application/json">{"base": 2025, "ipca_full": 50.584381467603976, "ipca_tarc": 14.637934610721537, "labels": {"receita_corrente": "Receita corrente", "receita_impostos_taxas": "Impostos e taxas", "rcl": "RCL", "desp_corrente_total": "Despesa corrente", "desp_corr_pessoal": "Pessoal", "desp_corr_juros": "Juros da dívida", "desp_corr_outras": "Outras desp. correntes", "desp_capital_total": "Despesa de capital", "desp_cap_investimentos": "Investimentos", "desp_cap_inversoes": "Inversões financeiras", "desp_cap_amortizacao": "Amortização da dívida"}, "comps": ["receita_corrente", "receita_impostos_taxas", "rcl", "desp_corrente_total", "desp_corr_pessoal", "desp_corr_juros", "desp_corr_outras", "desp_capital_total", "desp_cap_investimentos", "desp_cap_inversoes", "desp_cap_amortizacao"], "full": {"receita_corrente": {"real_ini": 297261340615.10266, "real_fim": 350722458389.2, "var_total_real": 17.984551123759964, "cagr_real": 2.0888103736484975}, "receita_impostos_taxas": {"real_ini": 226294122746.73593, "real_fim": 268400139170.31, "var_total_real": 18.60676535143526, "cagr_real": 2.1559537331668155}, "rcl": {"real_ini": 228229384437.7307, "real_fim": 266221395322.55, "var_total_real": 16.646415174985883, "cagr_real": 1.9433555269819491}, "desp_corrente_total": {"real_ini": 277963092395.89453, "real_fim": 321203899070.82, "var_total_real": 15.556312279523388, "cagr_real": 1.8237785781566984}, "desp_corr_pessoal": {"real_ini": 129419051078.99579, "real_fim": 143575053312.56, "var_total_real": 10.938113141413442, "cagr_real": 1.305983441482006}, "desp_corr_juros": {"real_ini": 12755330497.986547, "real_fim": 15405991033.83, "var_total_real": 20.780806395113505, "cagr_real": 2.3881605115972926}, "desp_corr_outras": {"real_ini": 135788710818.91219, "real_fim": 162222854724.43, "var_total_real": 19.467114567992617, "cagr_real": 2.248288402151011}, "desp_capital_total": {"real_ini": 23631118009.43852, "real_fim": 34235377127.04, "var_total_real": 44.87413212259372, "cagr_real": 4.742721995213439}, "desp_cap_investimentos": {"real_ini": 13271186701.060001, "real_fim": 11829883529.0, "var_total_real": -10.860394059145296, "cagr_real": -1.426803774906904}, "desp_cap_inversoes": {"real_ini": 5575908073.981516, "real_fim": 10054585046.86, "var_total_real": 80.3219298714237, "cagr_real": 7.648025503814937}, "desp_cap_amortizacao": {"real_ini": 4784023234.397, "real_fim": 12350908551.18, "var_total_real": 158.1699115166769, "cagr_real": 12.586988642334141}}, "tarcisio": {"receita_corrente": {"real_ini": 360425997827.3795, "real_fim": 350722458389.2, "var_total_real": -2.6922418184791574, "cagr_real": -0.9055901185024751}, "receita_impostos_taxas": {"real_ini": 289700283637.5618, "real_fim": 268400139170.31, "var_total_real": -7.3524762212176515, "cagr_real": -2.513471498330133}, "rcl": {"real_ini": 263053686038.62238, "real_fim": 266221395322.55, "var_total_real": 1.2042063852557128, "cagr_real": 0.3998015851831571}, "desp_corrente_total": {"real_ini": 307647499856.34344, "real_fim": 321203899070.82, "var_total_real": 4.406471439165527, "cagr_real": 1.4477624993845417}, "desp_corr_pessoal": {"real_ini": 128965365569.85184, "real_fim": 143575053312.56, "var_total_real": 11.328380823915918, "cagr_real": 3.641883660164136}, "desp_corr_juros": {"real_ini": 13730541484.05265, "real_fim": 15405991033.83, "var_total_real": 12.202355979356682, "cagr_real": 3.9123879929908734}, "desp_corr_outras": {"real_ini": 164951592802.43896, "real_fim": 162222854724.43, "var_total_real": -1.654265976853675, "cagr_real": -0.5544909111948604}, "desp_capital_total": {"real_ini": 35705576285.638695, "real_fim": 34235377127.04, "var_total_real": -4.117561769168332, "cagr_real": -1.3918018442399371}, "desp_cap_investimentos": {"real_ini": 21460083569.05275, "real_fim": 11829883529.0, "var_total_real": -44.87494193144853, "cagr_real": -18.005821319188787}, "desp_cap_inversoes": {"real_ini": 3408021285.049428, "real_fim": 10054585046.86, "var_total_real": 195.027061332282, "cagr_real": 43.42359950831256}, "desp_cap_amortizacao": {"real_ini": 10837471431.536518, "real_fim": 12350908551.18, "var_total_real": 13.964854525378056, "cagr_real": 4.453656342987711}}, "real_series": {"receita_corrente": {"2017": 297261340615.10266, "2018": 301279950652.57336, "2019": 307586449155.7371, "2020": 307453337372.32837, "2021": 341821988819.59045, "2022": 360425997827.3795, "2023": 330899463296.5868, "2024": 347404346248.5504, "2025": 350722458389.2, "2026": 183067898195.27725}, "receita_impostos_taxas": {"2017": 226294122746.73593, "2018": 232538806035.11298, "2019": 259455350351.52185, "2020": 252683793474.1604, "2021": 286684803478.38385, "2022": 289700283637.5618, "2023": 243738674785.246, "2024": 264507331414.92484, "2025": 268400139170.31, "2026": 140777860970.9696}, "rcl": {"2017": 228229384437.7307, "2018": 231271118689.9102, "2019": 224676165497.9959, "2020": 224177584930.38217, "2021": 246906827158.34787, "2022": 263053686038.62238, "2023": 251712786728.82904, "2024": 263977435198.18744, "2025": 266221395322.55, "2026": 267163900881.84033}, "desp_corrente_total": {"2017": 277963092395.89453, "2018": 280042737559.5878, "2019": 288982153169.59766, "2020": 276335079958.2638, "2021": 292449099460.97577, "2022": 307647499856.34344, "2023": 300138763517.09814, "2024": 317946422816.2981, "2025": 321203899070.82, "2026": 151893918755.58313}, "desp_corr_pessoal": {"2017": 129419051078.99579, "2018": 128701856081.50085, "2019": 128174503554.45999, "2020": 130984777564.14734, "2021": 120143912448.34845, "2022": 128965365569.85184, "2023": 135474103649.56978, "2024": 141127271980.96722, "2025": 143575053312.56, "2026": 70186689842.68849}, "desp_corr_juros": {"2017": 12755330497.986547, "2018": 16331892549.227875, "2019": 16871330128.046993, "2020": 3972720390.659766, "2021": 13781539774.735426, "2022": 13730541484.05265, "2023": 15235177074.516659, "2024": 15635315427.843796, "2025": 15405991033.83, "2026": 1624883056.9013982}, "desp_corr_outras": {"2017": 135788710818.91219, "2018": 135008988928.85913, "2019": 143936319487.0907, "2020": 141377582003.45667, "2021": 158523647237.89194, "2022": 164951592802.43896, "2023": 149429482793.01175, "2024": 161183835407.4871, "2025": 162222854724.43, "2026": 80082345855.99324}, "desp_capital_total": {"2017": 23631118009.43852, "2018": 24489702275.086285, "2019": 23728351607.597115, "2020": 17717994996.72508, "2021": 31869297001.7114, "2022": 35705576285.638695, "2023": 31576600659.866352, "2024": 34587067333.56533, "2025": 34235377127.04, "2026": 21403993023.58416}, "desp_cap_investimentos": {"2017": 13271186701.060001, "2018": 11841208895.891855, "2019": 10010903365.37467, "2020": 8862513822.694334, "2021": 11992740106.20707, "2022": 21460083569.05275, "2023": 15752908238.564184, "2024": 16315074388.124285, "2025": 11829883529.0, "2026": 3981784268.819183}, "desp_cap_inversoes": {"2017": 5575908073.981516, "2018": 3608786926.787743, "2019": 2925357126.9870563, "2020": 3636228962.9417934, "2021": 8729769358.84378, "2022": 3408021285.049428, "2023": 4636554347.098277, "2024": 6299601561.486188, "2025": 10054585046.86, "2026": 10480951219.434221}, "desp_cap_amortizacao": {"2017": 4784023234.397, "2018": 9039706452.406687, "2019": 10792091115.235388, "2020": 5219252211.08895, "2021": 11146787536.66055, "2022": 10837471431.536518, "2023": 11187138074.203894, "2024": 11972391383.954857, "2025": 12350908551.18, "2026": 6941257535.330755}}, "decomp": {"Período completo 2017→2025": {"r0": 170.95680781220258, "r1": 124.13401286493364, "dcl_nom_g": 27.542733613841918, "rcl_nom_g": 75.65128279538584, "dcl_real_g": -15.299626835598135, "rcl_real_g": 16.646415174985883, "ratio_so_rcl": 97.32738929743438, "ratio_so_dcl": 218.0429859826452}, "Salto 2020→2021": {"r0": 166.37871938979634, "r1": 126.63670707839914, "dcl_nom_g": -9.210105471625795, "rcl_nom_g": 19.2822107717469, "dcl_real_g": -17.509518133888257, "rcl_real_g": 10.13894508455171, "ratio_so_rcl": 139.48326268715059, "ratio_so_dcl": 151.0550638516558}, "Gestão Tarcísio 2022→2025": {"r0": 115.3463866046164, "r1": 124.13401286493364, "dcl_nom_g": 24.85723622708649, "rcl_nom_g": 16.018411939229104, "dcl_real_g": 9.186121196661222, "rcl_real_g": 1.2042063852557128, "ratio_so_rcl": 99.42075975409428, "ratio_so_dcl": 144.01831040233438}}}</script>
+<div class="tt" id="tt"></div>
+
+<script id="data" type="application/json">{"fiscal": [{"ano": 2017, "receita_corrente": 197405160958.91, "receita_impostos_taxas": 150277286755.28, "receita_impostos": 144002501913.5, "desp_corrente_total": 184589590027.1, "desp_corr_pessoal": 85944538084.01, "desp_corr_juros": 8470553435.67, "desp_corr_outras": 90174498507.42, "desp_capital_total": 15692940914.01, "desp_cap_investimentos": 8813122962.5, "desp_cap_inversoes": 3702846217.94, "desp_cap_amortizacao": 3176971733.57, "resultado_corrente": 12815570931.809998, "desp_corr_sobre_rec_corr": 93.50798587556808, "rcl": 151562454361.73, "receita_primaria": 225674761894.04, "despesa_primaria": 216545337986.3, "resultado_primario": 9129423907.74, "pessoal_dtp": 65814113344.54, "pessoal_rcl_ajust": 151528963696.73, "pessoal_pct_rcl": 43.43, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 294768329392.56, "dcl": 259106333818.64, "divida_rcl_aj": 151562454361.73, "dc_pct_rcl": 194.49, "dcl_pct_rcl": 170.96, "divida_limite": 303124908723.46, "caixa_bruta_a2": 28997038294.06, "garantias_total": 4121007033.31, "garantias_pct_rcl": 2.72, "garantias_limite": 48499985395.75, "opcredito_total": 7803963953.46, "opcredito_apurado": 7803963953.46, "opcredito_pct_rcl": 5.15, "opcredito_limite": 16.0, "caixa_bruta": 27395100365.08, "caixa_liquida": 10604986099.34}, {"ano": 2018, "receita_corrente": 207405896367.54, "receita_impostos_taxas": 160083402169.59, "receita_impostos": 153397171721.48, "desp_corrente_total": 192785862049.43, "desp_corr_pessoal": 88600398954.3, "desp_corr_juros": 11243133856.78, "desp_corr_outras": 92942329238.35, "desp_capital_total": 16859099455.96, "desp_cap_investimentos": 8151676007.01, "desp_cap_inversoes": 2484346156.22, "desp_cap_amortizacao": 6223077292.73, "resultado_corrente": 14620034318.110016, "desp_corr_sobre_rec_corr": 92.95100352778682, "rcl": 159210706095.47, "receita_primaria": 206892889805.6, "despesa_primaria": 192134309564.73, "resultado_primario": 12403802005.18, "pessoal_dtp": 69016942651.04, "pessoal_rcl_ajust": 159155348418.85, "pessoal_pct_rcl": 43.36, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 311794212065.99, "dcl": 279672335188.3, "divida_rcl_aj": 159210706095.47, "dc_pct_rcl": 195.84, "dcl_pct_rcl": 175.66, "divida_limite": 318421412190.94, "caixa_bruta_a2": 26607249330.84, "garantias_total": 4981120065.78, "garantias_pct_rcl": 3.13, "garantias_limite": 50947425950.55, "opcredito_total": 2898266909.66, "opcredito_apurado": 2898266909.66, "opcredito_pct_rcl": 1.82, "opcredito_limite": 16.0, "caixa_bruta": 27556108694.13, "caixa_liquida": 11633630043.83}, {"ano": 2019, "receita_corrente": 219652005293.88, "receita_impostos_taxas": 185280880043.2, "receita_impostos": 178072472638.49, "desp_corrente_total": 206366404020.96, "desp_corr_pessoal": 91531297333.03, "desp_corr_juros": 12048064876.63, "desp_corr_outras": 102787041811.3, "desp_capital_total": 16944764723.0, "desp_cap_investimentos": 7148933267.52, "desp_cap_inversoes": 2089040531.23, "desp_cap_amortizacao": 7706790924.25, "resultado_corrente": 13285601272.920013, "desp_corr_sobre_rec_corr": 93.95152288496308, "rcl": 160444552836.55, "receita_primaria": 221521871593.65, "despesa_primaria": 203555484140.92, "resultado_primario": 18329972785.08, "pessoal_dtp": 71194688211.7, "pessoal_rcl_ajust": 160359295919.93, "pessoal_pct_rcl": 44.4, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 312714949770.04, "dcl": 266730147182.02, "divida_rcl_aj": 160444552836.55, "dc_pct_rcl": 194.91, "dcl_pct_rcl": 166.24, "divida_limite": 320889105673.1, "caixa_bruta_a2": 28252866985.25, "garantias_total": 4763057578.69, "garantias_pct_rcl": 2.97, "garantias_limite": 51342256907.7, "opcredito_total": 2255496551.47, "opcredito_apurado": 2255496551.47, "opcredito_pct_rcl": 1.41, "opcredito_limite": 16.0, "caixa_bruta": 26115561920.03, "caixa_liquida": 9208229196.39}, {"ano": 2020, "receita_corrente": 226608219237.24, "receita_impostos_taxas": 186240373770.76, "receita_impostos": 179287516914.03, "desp_corrente_total": 203672534236.6, "desp_corr_pessoal": 96542218226.28, "desp_corr_juros": 2928090164.67, "desp_corr_outras": 104202225845.65, "desp_capital_total": 13059033051.9, "desp_cap_investimentos": 6532108229.79, "desp_cap_inversoes": 2680079445.79, "desp_cap_amortizacao": 3846845376.32, "resultado_corrente": 22935685000.639984, "desp_corr_sobre_rec_corr": 89.87870560130555, "rcl": 165229897154.96, "receita_primaria": 227292750068.44, "despesa_primaria": 209956631747.51, "resultado_primario": 19960046930.79, "pessoal_dtp": 74992612397.39, "pessoal_rcl_ajust": 164892618275.53, "pessoal_pct_rcl": 45.48, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 328439772752.97, "dcl": 274907386935.5, "divida_rcl_aj": 165117514742.53, "dc_pct_rcl": 198.91, "dcl_pct_rcl": 166.49, "divida_limite": 330459794309.92, "caixa_bruta_a2": 44150092971.6, "garantias_total": 6141901270.23, "garantias_pct_rcl": 3.72, "garantias_limite": 52837604717.61, "opcredito_total": 1363560146.73, "opcredito_apurado": 1255457468.76, "opcredito_pct_rcl": 0.76, "opcredito_limite": 16.0, "caixa_bruta": 37821345019.52, "caixa_liquida": 19347770773.31}, {"ano": 2021, "receita_corrente": 272854556289.76, "receita_impostos_taxas": 228842079815.4, "receita_impostos": 220013879151.03, "desp_corrente_total": 233443347358.44, "desp_corr_pessoal": 95903174734.94, "desp_corr_juros": 11000918733.2, "desp_corr_outras": 126539253890.3, "desp_capital_total": 25439214494.94, "desp_cap_investimentos": 9573034759.05, "desp_cap_inversoes": 6968414621.73, "desp_cap_amortizacao": 8897765114.16, "resultado_corrente": 39411208931.32001, "desp_corr_sobre_rec_corr": 85.55596451559087, "rcl": 197089874182.32, "receita_primaria": 275041229184.34, "despesa_primaria": 238983878006.02, "resultado_primario": 41890449997.8, "pessoal_dtp": 76151422917.79, "pessoal_rcl_ajust": 196835991677.1, "pessoal_pct_rcl": 38.69, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 321369575120.49, "dcl": 249588126649.45, "divida_rcl_aj": 196999264980.1, "dc_pct_rcl": 163.13, "dcl_pct_rcl": 126.69, "divida_limite": 394179748364.64, "caixa_bruta_a2": 69679042240.14, "garantias_total": 5756430078.15, "garantias_pct_rcl": 2.92, "garantias_limite": 63039764793.63, "opcredito_total": 1149946992.32, "opcredito_apurado": 1149946992.32, "opcredito_pct_rcl": 0.58, "opcredito_limite": 16.0, "caixa_bruta": 57801678632.15, "caixa_liquida": 29053484168.48}, {"ano": 2022, "receita_corrente": 314403778340.29, "receita_impostos_taxas": 252708917533.54, "receita_impostos": 242553235278.35, "desp_corrente_total": 268364482403.69, "desp_corr_pessoal": 112497984203.73, "desp_corr_juros": 11977310591.54, "desp_corr_outras": 143889187608.42, "desp_capital_total": 31146388328.51, "desp_cap_investimentos": 18719879804.12, "desp_cap_inversoes": 2972856495.21, "desp_cap_amortizacao": 9453652029.18, "resultado_corrente": 46039295936.599976, "desp_corr_sobre_rec_corr": 85.3566340138667, "rcl": 229464781384.87, "receita_primaria": 309482036780.1, "despesa_primaria": 278079908111.48, "resultado_primario": 21150630999.18, "pessoal_dtp": 86901210788.16, "pessoal_rcl_ajust": 229116679153.22, "pessoal_pct_rcl": 37.93, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 332206846922.68, "dcl": 264679333857.63, "divida_rcl_aj": 229362305114.22, "dc_pct_rcl": 144.84, "dcl_pct_rcl": 115.4, "divida_limite": 458929562769.74, "caixa_bruta_a2": 92355500337.28, "garantias_total": 5109354491.87, "garantias_pct_rcl": 2.23, "garantias_limite": 73395937636.55, "opcredito_total": 3029459906.1, "opcredito_apurado": 3029459906.1, "opcredito_pct_rcl": 1.32, "opcredito_limite": 16.0, "caixa_bruta": 75106432545.34, "caixa_liquida": 34588200054.91}, {"ano": 2023, "receita_corrente": 301906546274.71, "receita_impostos_taxas": 222382655942.94, "receita_impostos": 210779622937.42, "desp_corrente_total": 273841053091.68, "desp_corr_pessoal": 123604064917.58, "desp_corr_juros": 13900293601.65, "desp_corr_outras": 136336694572.45, "desp_capital_total": 28809906046.21, "desp_cap_investimentos": 14372661933.95, "desp_cap_inversoes": 4230306376.45, "desp_cap_amortizacao": 10206937735.81, "resultado_corrente": 28065493183.03003, "desp_corr_sobre_rec_corr": 90.70391366820753, "rcl": 229658088101.43, "receita_primaria": 314180676296.05, "despesa_primaria": 295182532949.46, "resultado_primario": 5467854379.32, "pessoal_dtp": 97009484315.71, "pessoal_rcl_ajust": 229187318031.19, "pessoal_pct_rcl": 42.33, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 347336600618.37, "dcl": 293473507896.39, "divida_rcl_aj": 229423072570.19, "dc_pct_rcl": 151.4, "dcl_pct_rcl": 127.92, "divida_limite": 458846145140.38, "caixa_bruta_a2": 69574406655.16, "garantias_total": 4938361844.55, "garantias_pct_rcl": 2.15, "garantias_limite": 73415383222.46, "opcredito_total": 3472242744.66, "opcredito_apurado": 3472242744.66, "opcredito_pct_rcl": 1.51, "opcredito_limite": 16.0, "caixa_bruta": 59252667526.68, "caixa_liquida": 19873578154.56}, {"ano": 2024, "receita_corrente": 330808495284.07, "receita_impostos_taxas": 251871553254.47, "receita_impostos": 238387838565.61, "desp_corrente_total": 302757806137.41, "desp_corr_pessoal": 134385481908.07, "desp_corr_juros": 14888400867.26, "desp_corr_outras": 153483923362.08, "desp_capital_total": 32934808745.08, "desp_cap_investimentos": 15535687066.28, "desp_cap_inversoes": 5998663332.65, "desp_cap_amortizacao": 11400458346.15, "resultado_corrente": 28050689146.660034, "desp_corr_sobre_rec_corr": 91.5205656606332, "rcl": 251366970706.76, "receita_primaria": 345163635436.36, "despesa_primaria": 326531397153.15, "resultado_primario": 12941505872.87, "pessoal_dtp": 105811548439.06, "pessoal_rcl_ajust": 250793910488.38, "pessoal_pct_rcl": 42.19, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 372192972626.3, "dcl": 317655576689.71, "divida_rcl_aj": 251011974754.38, "dc_pct_rcl": 148.28, "dcl_pct_rcl": 126.55, "divida_limite": 502023949508.76, "caixa_bruta_a2": 83648143572.18, "garantias_total": 5329168513.75, "garantias_pct_rcl": 2.12, "garantias_limite": 80323831921.4, "opcredito_total": 3314122043.22, "opcredito_apurado": 3314122043.22, "opcredito_pct_rcl": 1.32, "opcredito_limite": 16.0, "caixa_bruta": 69266552921.94, "caixa_liquida": 27690042402.35}, {"ano": 2025, "receita_corrente": 350722458389.2, "receita_impostos_taxas": 268400139170.31, "receita_impostos": 254156899493.93, "desp_corrente_total": 321203899070.82, "desp_corr_pessoal": 143575053312.56, "desp_corr_juros": 15405991033.83, "desp_corr_outras": 162222854724.43, "desp_capital_total": 34235377127.04, "desp_cap_investimentos": 11829883529.0, "desp_cap_inversoes": 10054585046.86, "desp_cap_amortizacao": 12350908551.18, "resultado_corrente": 29518559318.380005, "desp_corr_sobre_rec_corr": 91.58349897125123, "rcl": 266221395322.55, "receita_primaria": 359127328915.24, "despesa_primaria": 341047412013.04, "resultado_primario": 8459480549.55, "pessoal_dtp": 109727119797.17, "pessoal_rcl_ajust": 265761362580.37, "pessoal_pct_rcl": 41.29, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 382603718968.85, "dcl": 330471301118.9, "divida_rcl_aj": 266021234077.37, "dc_pct_rcl": 143.82, "dcl_pct_rcl": 124.23, "divida_limite": 452042468154.74, "caixa_bruta_a2": 72573039043.59, "garantias_total": 5161275787.07, "garantias_pct_rcl": 1.94, "garantias_limite": 85126794904.76, "opcredito_total": 3181596590.16, "opcredito_apurado": 3134743090.16, "opcredito_pct_rcl": 1.18, "opcredito_limite": 16.0, "caixa_bruta": 57788728445.4, "caixa_liquida": 31968977416.23}, {"ano": 2026, "receita_corrente": 189489480340.69, "receita_impostos_taxas": 145716010189.88, "receita_impostos": 138528324619.34, "desp_corrente_total": 157221992581.16, "desp_corr_pessoal": 72648670336.17, "desp_corr_juros": 1681880051.62, "desp_corr_outras": 82891442193.37, "desp_capital_total": 22154793687.14, "desp_cap_investimentos": 4121455696.85, "desp_cap_inversoes": 10848597813.3, "desp_cap_amortizacao": 7184740176.99, "resultado_corrente": 32267487759.53, "desp_corr_sobre_rec_corr": 82.97135666765504, "rcl": 276535368805.57, "receita_primaria": 193392519444.31, "despesa_primaria": 176513482247.83, "resultado_primario": 4538753702.24, "pessoal_dtp": 115007415475.2, "pessoal_rcl_ajust": 270315717268.75, "pessoal_pct_rcl": 42.55, "pessoal_lim_max": 49.0, "pessoal_lim_prud": 46.55, "pessoal_lim_alerta": 44.1, "dc_bruta": 388526773912.53, "dcl": 313388331856.48, "divida_rcl_aj": 270576841926.75, "dc_pct_rcl": 143.59, "dcl_pct_rcl": 115.82, "divida_limite": 541153683853.5, "caixa_bruta_a2": 82193375517.4, "garantias_total": 4799911668.29, "garantias_pct_rcl": 1.77, "garantias_limite": 86584589416.56, "opcredito_total": 2977869253.08, "opcredito_apurado": 2947029253.08, "opcredito_pct_rcl": 1.09, "opcredito_limite": 16.0, "caixa_bruta": 82193375517.4, "caixa_liquida": null}], "capag": [{"ano": 2018, "ind1": 199.64, "nota1": "C", "ind2": 93.75, "nota2": "B", "ind3": 66.88, "nota3": "A", "capag": "B", "nota1_inferida": true, "nota2_inferida": true, "nota3_inferida": true}, {"ano": 2019, "ind1": 204.4507161, "nota1": "C", "ind2": 93.6796217, "nota2": "B", "ind3": 72.77831970000001, "nota3": "A", "capag": "B"}, {"ano": 2020, "ind1": 193.6864879, "nota1": "C", "ind2": 93.897972, "nota2": "B", "ind3": 78.0816388, "nota3": "A", "capag": "B"}, {"ano": 2021, "ind1": 198.32, "nota1": "C", "ind2": 92.52, "nota2": "B", "ind3": 41.68, "nota3": "A", "capag": "B"}, {"ano": 2022, "ind1": 162.3, "nota1": "C", "ind2": 89.58, "nota2": "A", "ind3": 54.3, "nota3": "A", "capag": "B"}, {"ano": 2023, "ind1": 144.53, "nota1": "C", "ind2": 87.71, "nota2": "B", "ind3": 37.78, "nota3": "A", "capag": "B"}, {"ano": 2024, "ind1": 152.38, "nota1": "C", "ind2": 89.64, "nota2": "B", "ind3": 3.59, "nota3": "B", "capag": "B"}, {"ano": 2025, "ind1": 147.35, "nota1": "C", "ind2": 89.75, "nota2": "B", "ind3": 1.97, "nota3": "B", "capag": "B"}], "meta": {"ente": "Governo do Estado de Sao Paulo", "id_ente": 35, "fonte": "SICONFI/STN (RREO e RGF) e Boletim CAPAG/STN", "periodo_ref": {"rreo": "periodo 6 (ate dez); 2026 periodo 3 (ate jun)", "rgf": "3o quadrimestre; 2026 1o quadrimestre"}}}</script>
+<script>
+(function(){
+  "use strict";
+  const DB = JSON.parse(document.getElementById('data').textContent);
+  const AN = JSON.parse(document.getElementById('analysis').textContent);
+  const F = DB.fiscal, CAP = DB.capag;
+  const full = F.filter(d=>d.ano<=2025);           // exercicios completos (fluxos)
+  const allY = F;                                   // inclui 2026 parcial (estoques/razoes)
+  const cs = getComputedStyle(document.documentElement);
+  const col = n => cs.getPropertyValue('--'+n).trim();
+  const S = {s1:col('s1'),s2:col('s2'),s3:col('s3'),s4:col('s4'),s5:col('s5'),s6:col('s6'),s7:col('s7'),
+    good:col('good'),warn:col('warn'),crit:col('crit'),ink3:col('ink3'),accent:col('accent')};
+  const bi = v => v==null?null:v/1e9;
+  const nf = (v,d=1)=> v==null?'—':v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const fBi = v => v==null?'—':'R$ '+nf(bi(v),1)+' bi';
+  const fPct = (v,d=1)=> v==null?'—':nf(v,d)+'%';
+
+  const tt = document.getElementById('tt');
+  function showTT(html,vx,vy){ tt.innerHTML=html; tt.style.opacity=1;
+    const w=tt.offsetWidth||180, h=tt.offsetHeight||80, pad=8;
+    let x=vx+14, y=vy;
+    if(x+w+pad>window.innerWidth) x=vx-w-14;
+    if(x<pad) x=pad;
+    if(y+h+pad>window.innerHeight) y=window.innerHeight-h-pad;
+    if(y<pad) y=pad;
+    tt.style.left=x+'px'; tt.style.top=y+'px'; }
+  function hideTT(){ tt.style.opacity=0; }
+
+  // ---------- generic SVG chart ----------
+  const SVGNS='http://www.w3.org/2000/svg';
+  function el(tag,at){const e=document.createElementNS(SVGNS,tag);for(const k in at)e.setAttribute(k,at[k]);return e;}
+  function niceMax(m){ if(m<=0)return 1; const p=Math.pow(10,Math.floor(Math.log10(m))); const n=m/p;
+    const s=n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10; return s*p; }
+
+  // W/H in viewBox units
+  const W=760,H=380, M={t:18,r:18,b:34,l:52};
+  const IW=W-M.l-M.r, IH=H-M.t-M.b;
+
+  function baseSVG(host){
+    host.innerHTML='';
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img'});
+    host.appendChild(svg); return svg;
+  }
+  function yAxis(svg,ymin,ymax,fmt){
+    const ticks=5;
+    for(let i=0;i<=ticks;i++){
+      const v=ymin+(ymax-ymin)*i/ticks;
+      const y=M.t+IH-(IH*i/ticks);
+      svg.appendChild(el('line',{class:'gl',x1:M.l,y1:y,x2:M.l+IW,y2:y}));
+      const t=el('text',{class:'axl',x:M.l-8,y:y+3.5,'text-anchor':'end'});
+      t.textContent=fmt(v); svg.appendChild(t);
+    }
+  }
+  function xLabels(svg,years){
+    const n=years.length;
+    years.forEach((yr,i)=>{
+      const x=M.l+(n===1?IW/2:IW*i/(n-1));
+      const t=el('text',{class:'axl x',x:x,y:M.t+IH+20}); t.textContent=yr; svg.appendChild(t);
+    });
+  }
+  const xPos=(i,n)=> M.l+(n===1?IW/2:IW*i/(n-1));
+  const yPos=(v,ymin,ymax)=> M.t+IH-(IH*(v-ymin)/(ymax-ymin));
+
+  // hover overlay: given years + rows(year->html), add vertical guide + tooltip
+  function addHover(svg,host,years,htmlFor){
+    const n=years.length;
+    const guide=el('line',{class:'hover-guide',y1:M.t,y2:M.t+IH,x1:0,x2:0}); svg.appendChild(guide);
+    const rect=el('rect',{x:M.l,y:M.t,width:IW,height:IH,fill:'transparent'});
+    svg.appendChild(rect);
+    function move(ev){
+      const r=svg.getBoundingClientRect();
+      const px=(ev.clientX-r.left)/r.width*W;
+      let i=Math.round((px-M.l)/(IW/(n-1||1))); i=Math.max(0,Math.min(n-1,i));
+      const gx=xPos(i,n); guide.setAttribute('x1',gx); guide.setAttribute('x2',gx); guide.style.opacity=1;
+      const vx=r.left+(gx/W)*r.width;
+      const vy=r.top+(M.t/H)*r.height;
+      showTT(htmlFor(i), vx, vy);
+    }
+    rect.addEventListener('mousemove',move);
+    rect.addEventListener('mouseleave',()=>{guide.style.opacity=0;hideTT();});
+    // touch
+    rect.addEventListener('touchstart',e=>{move(e.touches[0]);},{passive:true});
+    rect.addEventListener('touchmove',e=>{move(e.touches[0]);},{passive:true});
+  }
+
+  function swatch(c,line){return `<i style="background:${c};${line?'height:3px;width:14px;border-radius:2px;':''}"></i>`;}
+
+  // ----- line chart -----
+  function lineChart(host,{years,series,fmt=fBi,ymin=0,ymax=null,thresholds=[],valFmt=null}){
+    const svg=baseSVG(host);
+    let mx=ymax; if(mx==null){ mx=0; series.forEach(s=>s.data.forEach(v=>{if(v!=null&&v>mx)mx=v;}));
+      thresholds.forEach(t=>{if(t.y>mx)mx=t.y;}); mx=niceMax(mx*1.08); }
+    let mn=ymin; if(mn==null){ mn=Infinity; series.forEach(s=>s.data.forEach(v=>{if(v!=null&&v<mn)mn=v;})); mn=Math.min(0,mn);}
+    yAxis(svg,mn,mx,v=>fmt(fmtRaw(v,fmt)));
+    xLabels(svg,years);
+    thresholds.forEach(t=>{
+      const y=yPos(t.y,mn,mx);
+      svg.appendChild(el('line',{class:'thr',x1:M.l,x2:M.l+IW,y1:y,y2:y,stroke:t.color}));
+      const lb=el('text',{class:'thr-lab',x:M.l+IW-2,y:y-4,'text-anchor':'end',fill:t.color});
+      lb.textContent=t.label; svg.appendChild(lb);
+    });
+    const n=years.length;
+    series.forEach(s=>{
+      let dpath='';
+      s.data.forEach((v,i)=>{ if(v==null)return; const x=xPos(i,n),y=yPos(v,mn,mx);
+        dpath+=(dpath?'L':'M')+x+' '+y+' '; });
+      svg.appendChild(el('path',{d:dpath,fill:'none',stroke:s.color,'stroke-width':2.4,'stroke-linejoin':'round','stroke-linecap':'round'}));
+      // endpoint emphasis
+      let li=-1; s.data.forEach((v,i)=>{if(v!=null)li=i;});
+      if(li>=0){const x=xPos(li,n),y=yPos(s.data[li],mn,mx);
+        svg.appendChild(el('circle',{class:'dot-end',cx:x,cy:y,r:4,fill:s.color}));}
+    });
+    const vf = valFmt||fmt;
+    addHover(svg,host,years,i=>{
+      let h=`<div class="ty">${years[i]}${years[i]==2026?' · parcial':''}</div>`;
+      series.forEach(s=>{ h+=`<div class="tr"><span class="k">${swatch(s.color)}${s.name}</span><span class="v">${vf(s.data[i])}</span></div>`;});
+      return h;
+    });
+  }
+  function fmtRaw(v,fmt){return v;} // helper passthrough
+
+  // ----- stacked bar -----
+  function stackedBar(host,{years,series,fmt=fBi}){
+    const svg=baseSVG(host);
+    const n=years.length;
+    let mx=0; years.forEach((_,i)=>{let s=0;series.forEach(se=>s+=(se.data[i]||0));if(s>mx)mx=s;});
+    mx=niceMax(mx*1.05);
+    yAxis(svg,0,mx,v=>fmt(v)); xLabels(svg,years);
+    const bw=Math.min(46, IW/n*0.62);
+    years.forEach((yr,i)=>{
+      const cx=xPos(i,n); let acc=0;
+      series.forEach(se=>{
+        const v=se.data[i]||0; if(v<=0){return;}
+        const h=IH*v/mx; const y=M.t+IH-(IH*(acc+v)/mx);
+        svg.appendChild(el('rect',{x:cx-bw/2,y:y,width:bw,height:Math.max(0,h-2),rx:3,fill:se.color,stroke:col('surface'),'stroke-width':0.5}));
+        acc+=v;
+      });
+    });
+    addHover(svg,host,years,i=>{
+      let tot=0;series.forEach(s=>tot+=(s.data[i]||0));
+      let h=`<div class="ty">${years[i]}${years[i]==2026?' · parcial':''}</div>`;
+      series.slice().reverse().forEach(s=>{h+=`<div class="tr"><span class="k">${swatch(s.color)}${s.name}</span><span class="v">${fmt(s.data[i])}</span></div>`;});
+      h+=`<div class="tr" style="border-top:1px solid var(--panel-line);margin-top:4px;padding-top:4px"><span class="k">Total</span><span class="v">${fmt(tot)}</span></div>`;
+      return h;
+    });
+  }
+
+  // ----- simple bars (single series, +/-) -----
+  function barChart(host,{years,data,color,fmt=fBi}){
+    const svg=baseSVG(host); const n=years.length;
+    let mx=0,mn=0; data.forEach(v=>{if(v!=null){mx=Math.max(mx,v);mn=Math.min(mn,v);}});
+    mx=niceMax(mx*1.1); if(mn<0)mn=-niceMax(-mn*1.1);
+    // y grid incl zero
+    const ticks=5;
+    for(let i=0;i<=ticks;i++){const v=mn+(mx-mn)*i/ticks;const y=M.t+IH-(IH*i/ticks);
+      svg.appendChild(el('line',{class:'gl',x1:M.l,y1:y,x2:M.l+IW,y2:y}));
+      const t=el('text',{class:'axl',x:M.l-8,y:y+3.5,'text-anchor':'end'});t.textContent=fmt(v);svg.appendChild(t);}
+    xLabels(svg,years);
+    const zeroY=yPos(0,mn,mx);
+    const bw=Math.min(44,IW/n*0.6);
+    years.forEach((yr,i)=>{const v=data[i];if(v==null)return;const cx=xPos(i,n);
+      const y=yPos(v,mn,mx);const h=Math.abs(zeroY-y);
+      svg.appendChild(el('rect',{x:cx-bw/2,y:Math.min(y,zeroY),width:bw,height:Math.max(1,h),rx:3,fill:v<0?S.crit:color}));
+    });
+    addHover(svg,host,years,i=>`<div class="ty">${years[i]}${years[i]==2026?' · parcial':''}</div>`+
+      `<div class="tr"><span class="k">${swatch(data[i]<0?S.crit:color)}Resultado</span><span class="v">${fmt(data[i])}</span></div>`);
+  }
+
+  const yFull=full.map(d=>d.ano), yAll=allY.map(d=>d.ano);
+  const biFmt=v=>v==null?'—':nf(bi(v),0);        // eixo em bi inteiros
+  const biFmt1=v=>v==null?'—':nf(bi(v),1);
+  const pctFmt=v=>v==null?'—':nf(v,0)+'%';
+
+  // ===== KPIs =====
+  (function(){
+    const last=F.find(d=>d.ano===2025), prev=F.find(d=>d.ano===2024);
+    const cap25=CAP.find(c=>c.ano===2025);
+    function delta(cur,pr,inv){ if(cur==null||pr==null)return '';
+      const dd=cur-pr; const pc=pr?(dd/Math.abs(pr)*100):0;
+      const cls=dd>=0?'up':'down';
+      return `<span class="${cls}">${dd>=0?'▲':'▼'} ${nf(Math.abs(pc),1)}%</span> vs 2024`;
+    }
+    const cards=[
+      {lab:'Receita Corrente Líquida',val:fBi(last.rcl),d:delta(last.rcl,prev.rcl),k:''},
+      {lab:'Resultado primário',val:fBi(last.resultado_primario),d:delta(last.resultado_primario,prev.resultado_primario),
+        k:last.resultado_primario>0?'g':'c',st:last.resultado_primario>0?['st-good','Superávit']:['st-crit','Déficit']},
+      {lab:'DCL / RCL',val:fPct(last.dcl_pct_rcl),d:delta(last.dcl_pct_rcl,prev.dcl_pct_rcl,true),dinv:true,
+        k:'g',st:['st-good','Folga vs. 200%']},
+      {lab:'Pessoal (DTP) / RCL',val:fPct(last.pessoal_pct_rcl),d:delta(last.pessoal_pct_rcl,prev.pessoal_pct_rcl,true),dinv:true,
+        k:'g',st:['st-good','Abaixo do alerta']},
+      {lab:'Caixa líquida',val:fBi(last.caixa_liquida),d:delta(last.caixa_liquida,prev.caixa_liquida),k:'g'},
+      {lab:'CAPAG '+(cap25?cap25.ano:''),val:cap25?cap25.capag:'—',valSmall:' consolidada',
+        k:'w',st:['st-warn','Nota B']},
+    ];
+    const host=document.getElementById('kpis');
+    host.innerHTML=cards.map(c=>`<div class="kpi ${c.k}">
+      <div class="lab">${c.lab}</div>
+      <div class="val">${c.val}${c.valSmall?'<small>'+c.valSmall+'</small>':''}</div>
+      ${c.d?`<div class="delta ${c.dinv?'inv':''}">${c.d}</div>`:''}
+      ${c.st?`<div class="status ${c.st[0]}">● ${c.st[1]}</div>`:''}
+    </div>`).join('');
+    document.getElementById('kpi-note').textContent=
+      'Valores do exercício de 2025 (último ano encerrado). Variação frente a 2024. RCL e DTP em 12 meses; dívida e caixa como saldo ao fim do 3º quadrimestre.';
+  })();
+
+  // ===== 01 resultados =====
+  barChart(document.getElementById('c-prim'),{years:yFull,data:full.map(d=>d.resultado_primario),color:S.s1,fmt:biFmt1});
+  lineChart(document.getElementById('c-corr'),{years:yFull,series:[{name:'Resultado corrente',color:S.s3,data:full.map(d=>d.resultado_corrente)}],fmt:biFmt1});
+
+  // ===== 02 despesas =====
+  const dcSeries=[
+    {name:'Pessoal e encargos',color:S.s1,data:full.map(d=>d.desp_corr_pessoal)},
+    {name:'Outras desp. correntes',color:S.s3,data:full.map(d=>d.desp_corr_outras)},
+    {name:'Juros e encargos',color:S.s2,data:full.map(d=>d.desp_corr_juros)},
+  ];
+  stackedBar(document.getElementById('c-despcorr'),{years:yFull,series:dcSeries,fmt:biFmt1});
+  legend('l-despcorr',dcSeries);
+  const kcSeries=[
+    {name:'Investimentos',color:S.s1,data:full.map(d=>d.desp_cap_investimentos)},
+    {name:'Inversões financeiras',color:S.s6,data:full.map(d=>d.desp_cap_inversoes)},
+    {name:'Amortização da dívida',color:S.s4,data:full.map(d=>d.desp_cap_amortizacao)},
+  ];
+  stackedBar(document.getElementById('c-despcap'),{years:yFull,series:kcSeries,fmt:biFmt1});
+  legend('l-despcap',kcSeries);
+
+  // ===== 03 receitas =====
+  const recS=[
+    {name:'Receita corrente',color:S.s1,data:full.map(d=>d.receita_corrente)},
+    {name:'Impostos, taxas e contrib.',color:S.s2,data:full.map(d=>d.receita_impostos_taxas)},
+  ];
+  lineChart(document.getElementById('c-rec'),{years:yFull,series:recS,fmt:biFmt});
+  legend('l-rec',recS,true);
+
+  // ===== 04 divida =====
+  const divS=[
+    {name:'Dívida consolidada bruta (DC)',color:S.s2,data:allY.map(d=>d.dc_bruta)},
+    {name:'Dívida consolidada líquida (DCL)',color:S.s1,data:allY.map(d=>d.dcl)},
+  ];
+  lineChart(document.getElementById('c-div'),{years:yAll,series:divS,fmt:biFmt});
+  legend('l-div',divS,true);
+  const divP=[
+    {name:'DC / RCL',color:S.s2,data:allY.map(d=>d.dc_pct_rcl)},
+    {name:'DCL / RCL',color:S.s1,data:allY.map(d=>d.dcl_pct_rcl)},
+  ];
+  lineChart(document.getElementById('c-divpct'),{years:yAll,series:divP,fmt:pctFmt,valFmt:v=>fPct(v),
+    ymax:220,thresholds:[{y:200,label:'Limite Senado 200%',color:S.crit}]});
+  legend('l-divpct',divP,true);
+
+  // ===== 05 pessoal =====
+  lineChart(document.getElementById('c-pess'),{years:yAll,
+    series:[{name:'DTP / RCL (Executivo)',color:S.s1,data:allY.map(d=>d.pessoal_pct_rcl)}],
+    fmt:pctFmt,valFmt:v=>fPct(v),ymin:0,ymax:52,
+    thresholds:[{y:49,label:'Máximo 49%',color:S.crit},{y:46.55,label:'Prudencial 46,55%',color:S.warn},{y:44.1,label:'Alerta 44,1%',color:S.s4}]});
+  legend('l-pess',[{name:'DTP/RCL',color:S.s1}],true);
+
+  // ===== 06 limites =====
+  (function(){
+    const last=F.find(d=>d.ano===2025);
+    document.getElementById('lim-sub').textContent='Exercício de '+last.ano+' · % da RCL ajustada';
+    const rows=[
+      {n:'DCL / RCL',v:last.dcl_pct_rcl,lim:200,scale:200},
+      {n:'Operações de crédito / RCL',v:last.opcredito_pct_rcl,lim:16,scale:16},
+      {n:'Garantias concedidas / RCL',v:last.garantias_pct_rcl,lim:22,scale:22},
+    ];
+    document.getElementById('limbars').innerHTML=rows.map(r=>{
+      const pct=Math.min(100,r.v/r.scale*100);
+      const cl=r.v/r.lim<0.8?'good':r.v/r.lim<1?'warn':'crit';
+      const c=cl==='good'?S.good:cl==='warn'?S.warn:S.crit;
+      return `<div class="limrow">
+        <div class="lh"><span class="ln">${r.n}</span><span class="lv" style="color:${c}">${fPct(r.v)}</span></div>
+        <div class="track"><div class="fill" style="width:${pct}%;background:${c}"></div>
+          <div class="limmark" style="left:calc(${Math.min(100,r.lim/r.scale*100)}% - 1px)"></div></div>
+        <div class="limcap"><span>0%</span><span>limite ${r.lim}%</span></div>
+      </div>`;
+    }).join('');
+  })();
+  const ltS=[
+    {name:'Operações de crédito / RCL',color:S.s3,data:allY.map(d=>d.opcredito_pct_rcl)},
+    {name:'Garantias / RCL',color:S.s6,data:allY.map(d=>d.garantias_pct_rcl)},
+  ];
+  lineChart(document.getElementById('c-limtraj'),{years:yAll,series:ltS,fmt:v=>nf(v,0)+'%',valFmt:v=>fPct(v),ymin:0,
+    thresholds:[{y:16,label:'Op. créd. 16%',color:S.crit}]});
+  legend('l-limtraj',ltS,true);
+
+  // ===== 07 caixa + eficiencia =====
+  const cxS=[
+    {name:'Caixa bruta',color:S.s1,data:yFull.map(y=>{const d=F.find(x=>x.ano===y);return d.caixa_bruta;})},
+    {name:'Caixa líquida',color:S.s3,data:yFull.map(y=>{const d=F.find(x=>x.ano===y);return d.caixa_liquida;})},
+  ];
+  lineChart(document.getElementById('c-caixa'),{years:yFull,series:cxS,fmt:biFmt});
+  legend('l-caixa',cxS,true);
+  lineChart(document.getElementById('c-efic'),{years:yAll,
+    series:[{name:'Desp. corrente / rec. corrente',color:S.s2,data:allY.map(d=>d.desp_corr_sobre_rec_corr)}],
+    fmt:v=>nf(v,0)+'%',valFmt:v=>fPct(v),ymin:70,ymax:100});
+  legend('l-efic',[{name:'Desp. corr. / rec. corr.',color:S.s2}],true);
+
+  // ===== 08 CAPAG =====
+  (function(){
+    const tl=document.getElementById('capag-tl');
+    tl.innerHTML=CAP.map(c=>{
+      const cls=c.capag==='B+'?'Bp':c.capag;
+      return `<div class="capag-cell"><div class="yr">${c.ano}</div><div class="lt ${cls}">${c.capag}</div></div>`;
+    }).join('');
+    const yC=CAP.map(c=>c.ano);
+    const c12=[
+      {name:'Ind.1 — Endividamento (DC/RCL)',color:S.s2,data:CAP.map(c=>c.ind1)},
+      {name:'Ind.2 — Poupança corrente',color:S.s1,data:CAP.map(c=>c.ind2)},
+    ];
+    lineChart(document.getElementById('c-cap12'),{years:yC,series:c12,fmt:v=>nf(v,0)+'%',valFmt:v=>fPct(v),ymin:0,
+      thresholds:[{y:150,label:'Ind.1: teto nota B (150%)',color:S.s2},{y:95,label:'Ind.2: teto nota B (95%)',color:S.s1}]});
+    legend('l-cap12',c12,true);
+    // notas grid
+    renderNotas(document.getElementById('c-capnotas'),CAP);
+  })();
+
+  function renderNotas(host,cap){
+    const cols=['Ind.1','Ind.2','Ind.3','CAPAG'];
+    let h='<table style="min-width:0;width:100%;font-size:12.5px"><thead><tr><th style="text-align:left">Ano</th>';
+    cols.forEach(c=>h+=`<th style="text-align:center">${c}</th>`); h+='</tr></thead><tbody>';
+    cap.forEach(c=>{
+      const b=(n)=>{const cls='nb-'+(n||'').replace('+','');return `<span class="nota-badge ${cls}">${n||'—'}</span>`;};
+      h+=`<tr><td style="text-align:left;font-weight:600">${c.ano}</td>
+        <td style="text-align:center">${b(c.nota1)}</td>
+        <td style="text-align:center">${b(c.nota2)}</td>
+        <td style="text-align:center">${b(c.nota3)}</td>
+        <td style="text-align:center">${b(c.capag)}</td></tr>`;
+    });
+    h+='</tbody></table>';
+    host.innerHTML=h;
+  }
+
+  // ===== legend helper =====
+  function legend(id,series,line){
+    document.getElementById(id).innerHTML=series.map(s=>
+      `<span><i class="${line?'ln':''}" style="background:${s.color}"></i>${s.name}</span>`).join('');
+  }
+
+  // ===== 09 table =====
+  (function(){
+    const rows=[
+      {g:'RECEITAS (R$ mi)'},
+      {k:'receita_corrente',l:'Receita corrente total'},
+      {k:'receita_impostos_taxas',l:'  Impostos, taxas e contrib.'},
+      {k:'receita_impostos',l:'  Impostos'},
+      {k:'rcl',l:'Receita Corrente Líquida (RCL)'},
+      {g:'DESPESA CORRENTE (R$ mi)'},
+      {k:'desp_corrente_total',l:'Despesa corrente total'},
+      {k:'desp_corr_pessoal',l:'  Pessoal e encargos'},
+      {k:'desp_corr_juros',l:'  Juros e encargos da dívida'},
+      {k:'desp_corr_outras',l:'  Outras despesas correntes'},
+      {g:'DESPESA DE CAPITAL (R$ mi)'},
+      {k:'desp_capital_total',l:'Despesa de capital total'},
+      {k:'desp_cap_investimentos',l:'  Investimentos'},
+      {k:'desp_cap_inversoes',l:'  Inversões financeiras'},
+      {k:'desp_cap_amortizacao',l:'  Amortização da dívida'},
+      {g:'RESULTADOS (R$ mi)'},
+      {k:'resultado_corrente',l:'Resultado corrente'},
+      {k:'receita_primaria',l:'Receita primária'},
+      {k:'despesa_primaria',l:'Despesa primária'},
+      {k:'resultado_primario',l:'Resultado primário'},
+      {g:'DÍVIDA E LIMITES'},
+      {k:'dc_bruta',l:'Dívida consolidada bruta (R$ mi)'},
+      {k:'dcl',l:'Dívida consolidada líquida (R$ mi)'},
+      {k:'dc_pct_rcl',l:'DC / RCL (%)',p:1},
+      {k:'dcl_pct_rcl',l:'DCL / RCL (%) — lim. 200%',p:1},
+      {k:'pessoal_pct_rcl',l:'Pessoal DTP / RCL (%) — lim. 49%',p:1},
+      {k:'opcredito_pct_rcl',l:'Operações de crédito / RCL (%) — lim. 16%',p:1},
+      {k:'garantias_pct_rcl',l:'Garantias / RCL (%) — lim. 22%',p:1},
+      {g:'CAIXA (R$ mi)'},
+      {k:'caixa_bruta',l:'Disponibilidade de caixa bruta'},
+      {k:'caixa_liquida',l:'Disponibilidade de caixa líquida'},
+      {k:'desp_corr_sobre_rec_corr',l:'Desp. corrente / rec. corrente (%)',p:1},
+    ];
+    const years=F.map(d=>d.ano);
+    let h='<thead><tr><th>Indicador</th>';
+    years.forEach(y=>h+=`<th>${y}${y===2026?'*':''}</th>`); h+='</tr></thead><tbody>';
+    rows.forEach(r=>{
+      if(r.g){h+=`<tr><td class="grp" colspan="${years.length+1}">${r.g}</td></tr>`;return;}
+      h+=`<tr><td>${r.l.replace(/^  /,'&nbsp;&nbsp;&nbsp;')}</td>`;
+      F.forEach(d=>{let v=d[r.k];
+        let disp='—';
+        if(v!=null){ disp = r.p!=null ? nf(v,r.p)+'%' : nf(v/1e6,0); }
+        h+=`<td class="tnum">${disp}</td>`;
+      });
+      h+='</tr>';
+    });
+    h+='</tbody>';
+    document.getElementById('tbl').innerHTML=h;
+  })();
+
+  // ===== 10 takeaways =====
+  (function(){
+    const d25=F.find(d=>d.ano===2025), d17=F.find(d=>d.ano===2017), d21=F.find(d=>d.ano===2021);
+    const tks=[
+      {ic:'good',t:`<b>Desalavancagem consistente.</b> A dívida consolidada líquida caiu de <b>${fPct(d17.dcl_pct_rcl)} da RCL em 2017 para ${fPct(d25.dcl_pct_rcl)} em 2025</b> (${fPct(F.find(d=>d.ano===2026).dcl_pct_rcl)} no 1º quadrim. de 2026). O salto de qualidade ocorreu em 2021, quando a forte arrecadação de ICMS elevou a RCL e comprimiu a razão dívida/receita. SP opera hoje muito abaixo do teto de 200% do Senado.`},
+      {ic:'good',t:`<b>Folga larga nos limites de pessoal.</b> A despesa com pessoal do Executivo ficou em <b>${fPct(d25.pessoal_pct_rcl)} da RCL em 2025</b>, abaixo até do limite de alerta (44,1%) e bem distante do máximo de 49% da LRF. Ainda assim, a despesa de pessoal cresceu de R$ 86 bi (2017) para R$ 144 bi (2025), acompanhada por uma RCL em expansão.`},
+      {ic:'good',t:`<b>Resultados primários positivos em toda a série.</b> O Estado gerou superávit primário em todos os anos, com pico de <b>R$ 41,9 bi em 2021</b>. Os anos recentes mostram superávits menores (R$ ${nf(bi(d25.resultado_primario),1)} bi em 2025), sinal de que a despesa voltou a crescer em ritmo próximo ao da receita após o extraordinário de 2021–2022.`},
+      {ic:'warn',t:`<b>Rigidez estrutural da despesa corrente.</b> Pessoal e "outras despesas correntes" (que incluem custeio e transferências) dominam o orçamento. A despesa corrente consome cerca de <b>90% da receita corrente</b>, deixando poupança corrente limitada — o Indicador 2 da CAPAG fica sistematicamente na faixa B (87%–94%), a componente que mais pressiona a nota do Estado.`},
+      {ic:'warn',t:`<b>Investimento baixo e volátil.</b> A despesa de capital com investimentos oscilou entre R$ 6,5 bi e R$ 18,7 bi, sem tendência clara de alta e representando fração pequena do orçamento — reflexo do espaço fiscal ainda consumido pelo serviço da dívida e pela rigidez corrente.`},
+      {ic:'good',t:`<b>Liquidez e limites de endividamento confortáveis.</b> As operações de crédito (${fPct(d25.opcredito_pct_rcl)} da RCL) e as garantias (${fPct(d25.garantias_pct_rcl)}) estão muito abaixo dos tetos de 16% e 22%. A disponibilidade de caixa líquida saltou de ~R$ 10 bi (2017) para R$ ${nf(bi(d25.caixa_liquida),0)} bi (2025).`},
+      {ic:'info',t:`<b>CAPAG estável em "B".</b> A nota consolidada não muda desde 2018: endividamento ainda é o ponto fraco (Ind.1 = C, DC acima de 150% da RCL), compensado por poupança corrente na faixa B e liquidez sólida. Para migrar à nota A e reduzir a dependência de contragarantias, o desafio é combinar a continuidade da queda do endividamento com ganho de poupança corrente.`},
+    ];
+    document.getElementById('takeaways').innerHTML=tks.map(t=>
+      `<div class="tk"><div class="ic ${t.ic}">${t.ic==='good'?'✓':t.ic==='warn'?'!':t.ic==='crit'?'×':'i'}</div><div class="tx">${t.t}</div></div>`
+    ).join('');
+  })();
+
+  // ===== NEW: horizontal ranked bar =====
+  function hbarRanked(host,{items,fmt}){
+    host.innerHTML='';
+    const rows=items.slice().sort((a,b)=>b.value-a.value);
+    const n=rows.length, rowH=30, padT=8, padB=26, lft=160, rgt=50;
+    const w=760, h=padT+padB+n*rowH, iw=w-lft-rgt;
+    const svg=el('svg',{viewBox:`0 0 ${w} ${h}`,role:'img'}); host.appendChild(svg);
+    let mx=0; rows.forEach(r=>mx=Math.max(mx,Math.abs(r.value))); mx=niceMax(mx*1.05);
+    const hasNeg=rows.some(r=>r.value<0);
+    const dmin=hasNeg?-mx:0, dmax=mx;
+    const sx=v=>lft+iw*((v-dmin)/(dmax-dmin));
+    const zx=sx(0);
+    // vertical gridlines
+    const gt=hasNeg?[-mx,-mx/2,0,mx/2,mx]:[0,mx/4,mx/2,3*mx/4,mx];
+    gt.forEach(v=>{const x=sx(v);
+      svg.appendChild(el('line',{class:'gl',x1:x,y1:padT,x2:x,y2:h-padB}));
+      const t=el('text',{class:'axl x',x:x,y:h-padB+16});t.textContent=nf(v,0)+'%';svg.appendChild(t);});
+    svg.appendChild(el('line',{x1:zx,y1:padT,x2:zx,y2:h-padB,stroke:col('axis'),'stroke-width':1.4}));
+    rows.forEach((r,i)=>{
+      const y=padT+i*rowH+4, bh=rowH-13;
+      const pos=r.value>=0, c=pos?S.s1:S.s7;
+      const x0=Math.min(zx,sx(r.value)), bw=Math.abs(sx(r.value)-zx);
+      const rc=el('rect',{x:x0,y:y,width:Math.max(1,bw),height:bh,rx:3,fill:c});
+      svg.appendChild(rc);
+      const nm=el('text',{class:'axl',x:lft-10,y:y+bh/2+4,'text-anchor':'end',fill:col('ink-2')});
+      nm.setAttribute('style','font-size:12px'); nm.textContent=r.name; svg.appendChild(nm);
+      const vl=el('text',{x:pos?sx(r.value)+6:sx(r.value)-6,y:y+bh/2+4,'text-anchor':pos?'start':'end',
+        fill:c});
+      vl.setAttribute('style','font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums');
+      vl.textContent=(pos?'+':'')+nf(r.value,0)+'%'; svg.appendChild(vl);
+    });
+  }
+
+  // ===== NEW: trajetória real indexada =====
+  (function(){
+    const keys=['receita_corrente','desp_corr_pessoal','desp_corr_juros','desp_cap_investimentos'];
+    const names={receita_corrente:'Receita corrente',desp_corr_pessoal:'Pessoal',desp_corr_juros:'Juros da dívida',desp_cap_investimentos:'Investimentos'};
+    const colors={receita_corrente:S.s1,desp_corr_pessoal:S.s3,desp_corr_juros:S.s2,desp_cap_investimentos:S.s7};
+    const yrs=[]; for(let y=2017;y<=2025;y++)yrs.push(y);
+    const series=keys.map(k=>{
+      const base=AN.real_series[k]['2017'];
+      return {name:names[k],color:colors[k],data:yrs.map(y=>{const v=AN.real_series[k][y];return v==null?null:v/base*100;})};
+    });
+    lineChart(document.getElementById('c-realidx'),{years:yrs,series,fmt:v=>nf(v,0),valFmt:v=>nf(v,0)+' (2017=100)',
+      thresholds:[{y:100,label:'2017 = 100',color:col('axis')}]});
+    legend('l-realidx',series,true);
+  })();
+
+  // ===== NEW: rankings =====
+  (function(){
+    const mk=src=>AN.comps.map(k=>({name:AN.labels[k],value:src[k].var_total_real}));
+    hbarRanked(document.getElementById('c-rankfull'),{items:mk(AN.full)});
+    hbarRanked(document.getElementById('c-ranktarc'),{items:mk(AN.tarcisio)});
+  })();
+
+  // ===== NEW: radiografia inversões financeiras =====
+  (function(){
+    const INV=JSON.parse(document.getElementById('inv').textContent);
+    const yrs=INV.map(d=>d.ano);
+    const S_=[
+      {name:'Aumento de capital de empresas',color:S.s1,key:'capital'},
+      {name:'Execução de PPP',color:S.s2,key:'ppp'},
+      {name:'Intraorçamentária (entre órgãos)',color:S.s6,key:'intra'},
+      {name:'Títulos, imóveis e outros',color:S.s4,key:'outros2'},
+    ];
+    const series=S_.map(s=>({name:s.name,color:s.color,
+      data:INV.map(d=> s.key==='outros2' ? (d.titulos+d.imoveis+d.outros) : d[s.key])}));
+    stackedBar(document.getElementById('c-inv'),{years:yrs,series,fmt:v=>nf(v==null?0:v/1e9,1)});
+    legend('l-inv',series);
+    // breakdown 2025
+    const d25=INV.find(d=>d.ano===2025);
+    const parts=[
+      {n:'Aumento de capital de empresas',v:d25.capital,c:S.s1},
+      {n:'Execução de PPP',v:d25.ppp,c:S.s2},
+      {n:'Intraorçamentária',v:d25.intra,c:S.s6},
+      {n:'Títulos, imóveis e outros',v:d25.titulos+d25.imoveis+d25.outros,c:S.s4},
+    ];
+    const tot=d25.total;
+    document.getElementById('inv-breakdown').innerHTML=parts.map(p=>{
+      const pc=p.v/tot*100;
+      return `<div class="limrow" style="margin-bottom:12px">
+        <div class="lh"><span class="ln">${p.n}</span><span class="lv" style="color:${p.c}">R$ ${nf(p.v/1e9,1)} bi · ${nf(pc,0)}%</span></div>
+        <div class="track"><div class="fill" style="width:${Math.max(1,pc)}%;background:${p.c}"></div></div>
+      </div>`;
+    }).join('');
+  })();
+
+  // ===== NEW: investimento ampliado =====
+  (function(){
+    const A=JSON.parse(document.getElementById('ampl').textContent);
+    const yrs=A.series.map(d=>d.ano);
+    const series=[
+      {name:'Investimento direto',color:S.s3,key:'invdir'},
+      {name:'Aumento de capital de empresas',color:S.s1,key:'capital'},
+      {name:'Aportes de PPP',color:S.s2,key:'ppp'},
+    ].map(s=>({name:s.name,color:s.color,data:A.series.map(d=>d[s.key])}));
+    stackedBar(document.getElementById('c-ampl'),{years:yrs,series,fmt:v=>nf(v==null?0:v/1e9,1)});
+    legend('l-ampl',series);
+    // médias por gestão
+    const g=[A.avgs.gestao_ant,A.avgs.tarcisio];
+    const maxv=Math.max(...g.map(x=>x.ampl));
+    function grp(x){
+      return `<div style="margin-bottom:18px">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px">${x.label}</div>
+        <div class="limrow" style="margin-bottom:9px">
+          <div class="lh"><span class="ln">Investimento direto</span><span class="lv" style="color:${S.s3}">R$ ${nf(x.invdir/1e9,1)} bi</span></div>
+          <div class="track"><div class="fill" style="width:${x.invdir/maxv*100}%;background:${S.s3}"></div></div></div>
+        <div class="limrow">
+          <div class="lh"><span class="ln">Investimento ampliado</span><span class="lv" style="color:${S.s1}">R$ ${nf(x.ampl/1e9,1)} bi</span></div>
+          <div class="track"><div class="fill" style="width:${x.ampl/maxv*100}%;background:${S.s1}"></div></div></div>
+      </div>`;
+    }
+    document.getElementById('ampl-avg').innerHTML=g.map(grp).join('')+
+      `<div style="display:flex;gap:10px;margin-top:4px">
+        <div style="flex:1;text-align:center;padding:10px;background:var(--surface-2);border-radius:9px">
+          <div style="font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em">Δ direto</div>
+          <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:${S.good}">+12%</div></div>
+        <div style="flex:1;text-align:center;padding:10px;background:var(--surface-2);border-radius:9px">
+          <div style="font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em">Δ ampliado</div>
+          <div style="font-family:var(--serif);font-size:22px;font-weight:700;color:${S.good}">+21%</div></div>
+      </div>`;
+  })();
+
+  // ===== NEW: decomposição dívida/RCL =====
+  (function(){
+    const d=AN.decomp['Período completo 2017→2025'];
+    const scale=230;
+    const rows=[
+      {n:'2017 — ponto de partida',v:d.r0,c:S.ink3||col('ink-3')},
+      {n:'Só efeito RCL (dívida fixa)',v:d.ratio_so_rcl,c:S.good,tag:'denominador ↓'},
+      {n:'Só efeito dívida (RCL fixa)',v:d.ratio_so_dcl,c:S.crit,tag:'numerador ↑'},
+      {n:'2025 — resultado real',v:d.r1,c:S.s1},
+    ];
+    document.getElementById('decomp-viz').innerHTML=rows.map(r=>{
+      const pct=Math.min(100,r.v/scale*100);
+      return `<div class="limrow">
+        <div class="lh"><span class="ln">${r.n}${r.tag?' · <b style="color:'+r.c+'">'+r.tag+'</b>':''}</span><span class="lv" style="color:${r.c}">${nf(r.v,0)}%</span></div>
+        <div class="track"><div class="fill" style="width:${pct}%;background:${r.c}"></div>
+          <div class="limmark" style="left:calc(${200/scale*100}% - 1px)"></div></div>
+      </div>`;
+    }).join('')+`<div class="limcap"><span>0%</span><span>marca = limite Senado 200%</span></div>`;
+    // stats
+    function stat(lab,nom,real){
+      const cn=nom>=0?S.crit:S.good, cr=real>=0?S.crit:S.good;
+      return `<div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--panel-line)">
+        <span style="color:var(--ink-2);font-size:13px">${lab}</span>
+        <span style="font-variant-numeric:tabular-nums;font-size:13px">nominal <b style="color:${cn}">${nom>=0?'+':''}${nf(nom,1)}%</b>
+        &nbsp;·&nbsp; real <b style="color:${cr}">${real>=0?'+':''}${nf(real,1)}%</b></span></div>`;
+    }
+    document.getElementById('decomp-stats').innerHTML=
+      stat('Dívida consolidada líquida (2017→2025)',d.dcl_nom_g,d.dcl_real_g)+
+      stat('Receita Corrente Líquida (2017→2025)',d.rcl_nom_g,d.rcl_real_g);
+  })();
+
+  // ===== NEW: leitura crítica =====
+  (function(){
+    const items=[
+      {ic:'data',t:`<b>Desalavancagem estagnou na gestão atual.</b> Depois de a razão dívida/RCL cair fortemente até 2022, ela <b>voltou a subir de 115% (2022) para 124% (2025)</b>: em termos reais a dívida líquida cresceu +9% enquanto a RCL avançou apenas +1%. A melhora anterior veio quase toda do salto de arrecadação de 2021, não de quitação de dívida.`},
+      {ic:'data',t:`<b>Investimento: menos "obra orçada", mais capitalização e PPP.</b> O investimento <b>direto</b> caiu ~45% real de 2022 (pico eleitoral) a 2025, mas parte migrou para inversões (aporte a estatais e PPP). Pela <b>média de gestão</b>, o investimento direto até subiu (+12%) e o <b>ampliado</b> +21% frente à gestão anterior — não houve colapso do esforço de investimento, e sim troca de instrumento (ver seção específica).`},
+      {ic:'crit',t:`<b>Resultado dependente de receita extraordinária.</b> Críticos apontam que o equilíbrio recente se apoia em <b>privatizações (Sabesp, Emae)</b>: sem os ~R$ 13 bi da venda da Sabesp, a oposição estima que o exercício teria sido deficitário. A venda também é criticada por tarifas mais altas e dúvidas sobre regulação.`},
+      {ic:'crit',t:`<b>Renúncias fiscais e desvinculação de receitas.</b> O <b>TCE-SP aprovou as contas de 2025 com ressalvas</b>, com foco em renúncias fiscais e na fragilidade da fiscalização. A LDO autorizou <b>desvincular até 30% de receitas de fundos</b> (com impacto sobre Fapesp e universidades), medida contestada pela comunidade acadêmica e pela oposição.`},
+      {ic:'crit',t:`<b>Disputa política sobre a saúde fiscal.</b> O ministro da Fazenda, Fernando Haddad, questionou publicamente a situação fiscal de SP; o governo responde exibindo superávits primários e nota CAPAG B. A leitura dos dados sugere um quadro <b>sólido nos limites legais, porém com espaço fiscal ainda estreito</b> — alta rigidez corrente e baixo investimento.`},
+      {ic:'info',t:`<b>Contexto que favorece SP.</b> A trajetória da dívida é fortemente moldada por regras federais: o reindexador <b>IPCA+4% (LC 148/2014)</b> segura o crescimento do estoque, e o <b>Propag (2025)</b> reabre a renegociação. Parte da melhora de indicadores é estrutural/exógena, não fruto exclusivo da gestão estadual.`},
+    ];
+    document.getElementById('crit').innerHTML=items.map(t=>{
+      const cls=t.ic==='crit'?'warn':t.ic==='data'?'info':t.ic;
+      const sym=t.ic==='crit'?'!':t.ic==='data'?'◆':'ℹ';
+      return `<div class="tk"><div class="ic ${cls}">${sym}</div><div class="tx">${t.t}</div></div>`;
+    }).join('');
+  })();
+
+})();
+</script>
