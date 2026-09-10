@@ -108,6 +108,23 @@ def process_year(ano):
                    ["VALOR", f"Despesas Liquidadas Até o Bimestre / {ano}"])
     d["resultado_primario"] = res
 
+    # --- projeção anual (Previsão/Dotação Atualizada) — p/ o ano parcial corrente ---
+    PREV = ["PREVISÃO ATUALIZADA"]
+    DOT = ["DOTAÇÃO ATUALIZADA (e)", "DOTAÇÃO ATUALIZADA"]
+    proj = {
+        "receita_primaria": pick(a6, "RREO6TotalReceitaPrimaria", PREV),
+        "despesa_primaria": pick(a6, "RREO6TotalDespesaPrimaria", DOT),
+        "desp_corr_pessoal": pick(a1, "PessoalEEncargosSociais", DOT),
+        "desp_corr_outras": pick(a1, "OutrasDespesasCorrentes", DOT),
+        "desp_cap_investimentos": pick(a1, "Investimentos", DOT),
+        "desp_cap_inversoes": pick(a1, "InversoesFinanceiras", DOT),
+    }
+    if proj["receita_primaria"] is not None and proj["despesa_primaria"] is not None:
+        proj["resultado_primario"] = proj["receita_primaria"] - proj["despesa_primaria"]
+    else:
+        proj["resultado_primario"] = None
+    d["projecao"] = proj
+
     # --- RGF Anexo 01: pessoal ---
     VALP = ["TOTAL (ÚLTIMOS 12 MESES) (a)", "DESPESAS LIQUIDADAS", "Valor"]
     PCT = ["% sobre a RCL Ajustada", "% sobre a RCL"]
